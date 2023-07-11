@@ -77,8 +77,13 @@ void AAuraPlayerController::BeginPlay()
 	check(AuraContext);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext, 0);
+	// GetLocalPlayer()가 Valid해야만 Subsystem도 Valid하다.
+	// 하지만 GetLocalPlayer()가 유효하려면 해당 기기에서 Locally Controlled Player인 하나의 캐릭터만 유효하고 나머지 캐릭터에 대해서는 유효하지 않다.
+	// 따라서 기존의 assert(Subsystem) 대신 Subsystem에 대해 nullptr 체크를 수행하도록 변경한다.
+	if (Subsystem)
+	{
+		Subsystem->AddMappingContext(AuraContext, 0);
+	}
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
