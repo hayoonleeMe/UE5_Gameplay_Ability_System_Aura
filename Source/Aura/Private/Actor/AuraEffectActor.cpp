@@ -28,3 +28,11 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
+void AAuraEffectActor::OnOverlap(AActor* TargetActor)
+{
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+}
+
