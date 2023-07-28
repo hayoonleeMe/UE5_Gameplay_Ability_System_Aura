@@ -1,0 +1,26 @@
+// Copyright
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+
+/**
+ * AuraGameplayTags
+ *
+ * Singleton containing native Gameplay Tags
+ */
+
+struct FAuraGameplayTags
+{
+public:
+	// 레퍼런스를 반환하여 구조체 내에 하나만 존재하는 정적 변수 GameplayTags 자체에만 접근시킨다.
+	// -> 싱글톤 (단 하나의 인스턴스만 존재, 사용)
+	static const FAuraGameplayTags& Get() { return GameplayTags; }
+
+	static void InitializeNativeGameplayTags();
+protected:
+
+private:
+	static FAuraGameplayTags GameplayTags;
+};
