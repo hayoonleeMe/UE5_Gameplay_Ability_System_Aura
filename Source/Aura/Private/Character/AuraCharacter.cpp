@@ -30,6 +30,9 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
+
+	// Grant Ability
+	AddCharacterAbilities();
 }
 
 // 클라이언트에서 호출됨 (Rep Notify)
