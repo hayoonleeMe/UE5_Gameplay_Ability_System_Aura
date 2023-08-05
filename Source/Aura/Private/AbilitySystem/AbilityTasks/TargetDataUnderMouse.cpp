@@ -19,10 +19,17 @@ void UTargetDataUnderMouse::Activate()
 	}
 	else
 	{
-		// TODO : We are on the server, so listen for target data.
+		const FGameplayAbilitySpecHandle SpecHandle = GetAbilitySpecHandle();
+		const FPredictionKey ActivationPredictionKey = GetActivationPredictionKey();
+		AbilitySystemComponent.Get()->AbilityTargetDataSetDelegate(SpecHandle, ActivationPredictionKey).AddUObject(this, &UTargetDataUnderMouse::OnTargetDataReplicatedCallback);
+		const bool bCalledDelegate = AbilitySystemComponent.Get()->CallReplicatedTargetDataDelegatesIfSet(SpecHandle, ActivationPredictionKey);
+		
+		// 아직 클라이언트가 보낸 TargetData가 서버에 도착하지 않았다면 올 때까지 기다린다.
+		if (!bCalledDelegate)
+		{
+			SetWaitingOnRemotePlayerData();	
+		}
 	}
-	
-	
 }
 
 void UTargetDataUnderMouse::SendMouseCursorData()
@@ -42,6 +49,17 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 	AbilitySystemComponent->ServerSetReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey(), DataHandle, FGameplayTag(), AbilitySystemComponent->ScopedPredictionKey);
 
 	// Ability Task의 Delegate를 Broadcast하기 전에 호출해 Ability가 여전히 Active한지 확인한다.
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
+}
+
+void UTargetDataUnderMouse::OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle,
+	FGameplayTag ActivationTag)
+{
+	// ASC에게 이제 TargetData를 받았으니 더이상 캐싱하지 말도록 전하고 캐시 데이터를 모두 비운다.
+	AbilitySystemComponent.Get()->ConsumeClientReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey());
 	if (ShouldBroadcastAbilityTaskDelegates())
 	{
 		ValidData.Broadcast(DataHandle);

@@ -3,6 +3,7 @@
 
 #include "AuraAssetManager.h"
 #include "AuraGameplayTags.h"
+#include "AbilitySystemGlobals.h"
 
 UAuraAssetManager& UAuraAssetManager::Get()
 {
@@ -18,4 +19,8 @@ void UAuraAssetManager::StartInitialLoading()
 	Super::StartInitialLoading();
 
 	FAuraGameplayTags::InitializeNativeGameplayTags();
+
+	// This is required to use Target Data
+	// TargetDataScriptStructCache를 초기화 해주는 기능을 포함한다.
+	UAbilitySystemGlobals::Get().InitGlobalData();
 }
