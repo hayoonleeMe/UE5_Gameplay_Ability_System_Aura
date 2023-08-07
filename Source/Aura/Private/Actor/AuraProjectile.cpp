@@ -8,6 +8,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "Aura/Aura.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
  // Sets default values
 AAuraProjectile::AAuraProjectile()
@@ -62,6 +64,17 @@ void AAuraProjectile::BeginPlay()
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	LoopingSoundComponent->Stop();
 
-	if (HasAuthority()) Destroy();
-	else bHit = true;
+	if (HasAuthority()) 
+	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
+	
+		Destroy();
+	}
+	else
+	{
+		bHit = true;
+	}
  }
