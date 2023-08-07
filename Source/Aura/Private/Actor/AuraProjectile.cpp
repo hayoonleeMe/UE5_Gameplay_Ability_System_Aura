@@ -51,8 +51,10 @@ void AAuraProjectile::BeginPlay()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		LoopingSoundComponent->Stop();
 	}
+
+	// LifeSpan에 의해 제거될 때에도 LoopingSound를 중지해야 한다.
+	LoopingSoundComponent->Stop();
 	
 	 Super::Destroyed();
  }
@@ -62,7 +64,6 @@ void AAuraProjectile::BeginPlay()
  {
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	LoopingSoundComponent->Stop();
 
 	if (HasAuthority()) 
 	{
