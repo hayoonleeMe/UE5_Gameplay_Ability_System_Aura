@@ -43,8 +43,8 @@ void AAuraProjectile::BeginPlay()
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
 }
 
- void AAuraProjectile::Destroyed()
- {
+void AAuraProjectile::Destroyed()
+{
 	// 서버에서 실행된 OnSphereOverlap 이벤트가 클라이언트로 Replicated되기 전에 Destroy가 먼저 Replicated된다면
 	// OnSphereOverlap 이벤트에서 수행됐어야 할 Cosmetic Effect를 표시하고 Destroy 시킨다.
 	if (!bHit && !HasAuthority())
@@ -58,15 +58,20 @@ void AAuraProjectile::BeginPlay()
 	{
 		LoopingSoundComponent->Stop();
 	}
-	
-	 Super::Destroyed();
- }
 
- void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	Super::Destroyed();
+}
+
+void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
- {
-	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+{
+	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetEffectContext().GetEffectCauser() == OtherActor) return;
+
+	if (!bHit)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());	
+	}
 
 	if (HasAuthority()) 
 	{
@@ -81,4 +86,4 @@ void AAuraProjectile::BeginPlay()
 	{
 		bHit = true;
 	}
- }
+}
