@@ -22,6 +22,11 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	
 	// AttributeSet이 AbilitySystemComponent에 의해 관리되도록 자동으로 등록된다.
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
