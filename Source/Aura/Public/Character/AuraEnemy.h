@@ -32,6 +32,7 @@ public:
 
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
+	virtual UAnimMontage* GetAttackMontage_Implementation() override;
 	virtual void Die() override;
 	/* End Combat Interface */
 
@@ -71,4 +72,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> AttackMontage;
 };
