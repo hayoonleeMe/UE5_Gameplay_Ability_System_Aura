@@ -69,9 +69,16 @@ public:
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 	/*
-	 *	Abilities
+	 * Abilities
 	 */
 	FGameplayTag Abilities_Attack;
+	
+	/*
+	 * Montages
+	 */
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
 	
 	/*
 	 * Effects
