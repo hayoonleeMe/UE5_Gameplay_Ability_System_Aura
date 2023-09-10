@@ -67,11 +67,6 @@ int32 AAuraEnemy::GetPlayerLevel()
 	return Level;
 }
 
-UAnimMontage* AAuraEnemy::GetAttackMontage_Implementation()
-{
-	return AttackMontage;
-}
-
 void AAuraEnemy::Die()
 {
 	SetLifeSpan(LifeSpan);
