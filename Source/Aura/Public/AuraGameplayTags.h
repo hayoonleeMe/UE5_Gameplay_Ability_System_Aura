@@ -72,6 +72,7 @@ public:
 	 * Abilities
 	 */
 	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Summon;
 	
 	/*
 	 * Sockets
