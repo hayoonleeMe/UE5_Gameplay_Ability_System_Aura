@@ -70,7 +70,10 @@ void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetASC
 		if (TimesRemaining.Num() > 0)
 		{
 			// 모든 TimeRemaining 값의 최대값을 함께 브로드캐스팅
-			const float TimeRemaining = TimesRemaining.Max();
+			float TimeRemaining = TimesRemaining[0];
+			for (int32 i = 1; i < TimesRemaining.Num(); ++i)
+				if (TimeRemaining < TimesRemaining[i])
+					TimeRemaining = TimesRemaining[i];
 			CooldownStart.Broadcast(TimeRemaining);
 		}
 	}
