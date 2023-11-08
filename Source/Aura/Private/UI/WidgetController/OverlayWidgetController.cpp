@@ -114,9 +114,9 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
 	const int32 Level = AuraPlayerState->LevelUpInfo->FindLevelForXP(NewXP);
 	if (Level > 0 && Level <= LevelUpInfo->LevelUpInformation.Num())
 	{
-		const int32 LevelUpRequirement = AuraPlayerState->LevelUpInfo->LevelUpInformation[Level].LevelUpRequirement;
-		const int32 PrevLevelUpRequirement = AuraPlayerState->LevelUpInfo->LevelUpInformation[Level - 1].LevelUpRequirement;
-		const int32 DeltaLevelUpRequirement = PrevLevelUpRequirement - LevelUpRequirement;
+		const int32 LevelUpRequirement = LevelUpInfo->LevelUpInformation[Level].LevelUpRequirement;
+		const int32 PrevLevelUpRequirement = LevelUpInfo->LevelUpInformation[Level - 1].LevelUpRequirement;
+		const int32 DeltaLevelUpRequirement = LevelUpRequirement - PrevLevelUpRequirement;
 
 		const int32 XPForThisLevel = NewXP - PrevLevelUpRequirement;
 		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelUpRequirement);
