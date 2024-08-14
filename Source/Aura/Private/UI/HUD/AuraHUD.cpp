@@ -24,6 +24,10 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 	OverlayWidget = CreateWidget<UAuraUserWidget>(GetWorld(), OverlayWidgetClass);
 	const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-	OverlayWidget->SetWidgetController(GetOverlayWidgetController(WidgetControllerParams));
+	if (GetOverlayWidgetController(WidgetControllerParams))
+	{
+		OverlayWidget->SetWidgetController(OverlayWidgetController);
+		OverlayWidgetController->BroadcastInitialValues();
+	}
 	OverlayWidget->AddToViewport();
 }
