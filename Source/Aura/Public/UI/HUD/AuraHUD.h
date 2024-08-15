@@ -29,12 +29,12 @@ public:
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
 private:
-	UPROPERTY(EditAnywhere, Category="Overlay")
+	UPROPERTY(EditAnywhere, Category="Aura|Overlay")
 	TSubclassOf<UAuraUserWidget> OverlayWidgetClass;
 
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
-	UPROPERTY(EditAnywhere, Category="Overlay")
+	UPROPERTY(EditAnywhere, Category="Aura|Overlay")
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 };

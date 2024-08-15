@@ -45,29 +45,29 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	EEffectApplicationPolicy InstantEffectApplicationPolicy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	EEffectApplicationPolicy DurationEffectApplicationPolicy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	EEffectApplicationPolicy InfiniteEffectApplicationPolicy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy;
 
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
 	float ActorLevel;
 };

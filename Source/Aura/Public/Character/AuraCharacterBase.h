@@ -25,7 +25,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category="Combat")
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
 
 	UPROPERTY()
@@ -36,7 +36,7 @@ protected:
 
 	virtual void InitAbilityActorInfo();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
 	void InitializePrimaryAttributes() const;
