@@ -61,5 +61,5 @@ void AAuraCharacter::InitAbilityActorInfo()
 	}
 
 	// AbilitySystemComponent가 유효하게 설정된 뒤에, Attribute 초기화
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }
