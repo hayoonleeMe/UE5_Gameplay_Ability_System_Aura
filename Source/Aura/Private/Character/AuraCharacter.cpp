@@ -23,12 +23,16 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+// 서버에서 호출됨 
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
+
+	// Grant Ability
+	AddCharacterAbilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
