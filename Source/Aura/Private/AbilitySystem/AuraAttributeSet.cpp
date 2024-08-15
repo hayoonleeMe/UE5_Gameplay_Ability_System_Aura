@@ -10,7 +10,7 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(50.f);
+	InitHealth(10.f);
 	InitMaxHealth(100.f);
 	InitMana(50.f);
 	InitMaxMana(50.f);
@@ -42,7 +42,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		//SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 	}
 	else if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
