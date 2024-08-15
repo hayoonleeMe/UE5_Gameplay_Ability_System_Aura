@@ -19,10 +19,7 @@ struct FEffectProperties
 	GENERATED_BODY()
 
 	FEffectProperties()
-	{}
-
-	FEffectProperties(UAbilitySystemComponent* InSourceASC, AActor* InSourceAvatarActor, AController* InSourceController, ACharacter* InSourceCharacter, UAbilitySystemComponent* InTargetASC, AActor* InTargetAvatarActor, AController* InTargetController, ACharacter* InTargetCharacter)
-		: SourceASC(InSourceASC), SourceAvatarActor(InSourceAvatarActor), SourceController(InSourceController), SourceCharacter(InSourceCharacter), TargetASC(InTargetASC), TargetAvatarActor(InTargetAvatarActor), TargetController(InTargetController), TargetCharacter(InTargetCharacter)
+		: SourceASC(), SourceAvatarActor(), SourceController(), SourceCharacter(), TargetASC(), TargetAvatarActor(), TargetController(), TargetCharacter()
 	{}
 
 	FGameplayEffectContextHandle EffectContextHandle;

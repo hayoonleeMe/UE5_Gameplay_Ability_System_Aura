@@ -17,10 +17,7 @@ struct FUIWidgetRow : public FTableRowBase
 	GENERATED_BODY()
 
 	FUIWidgetRow()
-	{}
-	
-	FUIWidgetRow(FGameplayTag InAssetTag, FText InMessage, TSubclassOf<UAuraUserWidget> InMessageWidget, UTexture2D* InImage)
-		: AssetTag(InAssetTag), Message(InMessage), MessageWidget(InMessageWidget), Image(InImage)
+		: AssetTag(), Message(), MessageWidget(), Image()
 	{}
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
