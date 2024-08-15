@@ -60,8 +60,11 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	UAuraAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	TMap<FGameplayTag, FGameplayAttribute> TagsToAttributes;
 
 	/*
 	 *	Primary Attributes
