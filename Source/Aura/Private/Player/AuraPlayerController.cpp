@@ -81,7 +81,6 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit)
 	{
@@ -115,8 +114,8 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	// LMB가 아닌 입력
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Released (마우스 커서가 특정 오브젝트 위에서 Pressed하고 이후에 Released한다면 특정 어빌리티 활성화)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting)
 	{
 		if (IsValid(GetAuraASC()))
 		{
@@ -125,48 +124,37 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		return;
 	}
 
-	/* LMB Input */
-	// Highlightable Object Pressed -> Released (마우스 커서가 특정 오브젝트 위에서 Pressed하고 이후에 Released한다면 특정 어빌리티 활성화)
-	if (bTargeting)
+	/* Click to Move */
+	// LMB on Non Highlightable Object Pressed -> Released	(마우스 커서가 특정 오브젝트 위에 있지 않으면서 Pressed하고 이후에 Released한다면 AutoRunning)
+	const APawn* ControlledPawn = GetPawn();
+	// Non Highlightable Object 위로 짧게 Press하면 Auto Running
+	if (ControlledPawn && FollowTime <= ShortPressThreshold)
 	{
-		if (GetAuraASC())
+		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 		{
-			GetAuraASC()->AbilityInputTagReleased(InputTag);
-		}
-	}
-	// Non Highlightable Object Pressed -> Released	(마우스 커서가 특정 오브젝트 위에 있지 않으면서 Pressed하고 이후에 Released한다면 AutoRunning)
-	else
-	{
-		const APawn* ControlledPawn = GetPawn();
-		// Non Highlightable Object 위로 짧게 Press하면 Auto Running
-		if (ControlledPawn && FollowTime <= ShortPressThreshold)
-		{
-			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+			SplineComponent->ClearSplinePoints();
+			for (const FVector& PointLoc : NavPath->PathPoints)
 			{
-				SplineComponent->ClearSplinePoints();
-				for (const FVector& PointLoc : NavPath->PathPoints)
-				{
-					SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
-				}
-
-				if (!NavPath->PathPoints.IsEmpty())
-				{
-					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
-				}
-				bAutoRunning = true;
+				SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+				DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
 			}
-		}
 
-		FollowTime = 0.f;
-		bTargeting = false;
+			if (!NavPath->PathPoints.IsEmpty())
+			{
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+			}
+			bAutoRunning = true;
+		}
 	}
+
+	FollowTime = 0.f;
+	bTargeting = false;
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	// LMB가 아닌 입력
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Held (마우스 커서가 특정 오브젝트 위에 있고 Input Held 중이면 특정 어빌리티 활성화)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting)
 	{
 		if (IsValid(GetAuraASC()))
 	    {
@@ -175,31 +163,19 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	/* LMB Input */
-	// Highlightable Object Pressed -> Held (마우스 커서가 특정 오브젝트 위에 있고 Input Held 중이면 특정 어빌리티 활성화)
-	if (bTargeting)
-	{
-		if (GetAuraASC())
-		{
-			GetAuraASC()->AbilityInputTagHeld(InputTag);
-		}
-	}
-	// Non Highlightable Object Pressed -> Held	(마우스 커서가 특정 오브젝트 위에 있지 않고 Input Held 중이면 Click to Move)
-	else
-	{
-		FollowTime += GetWorld()->GetDeltaSeconds();
-
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
-		{
-			CachedDestination = Hit.ImpactPoint;
-		}
-		if (APawn* ControlledPawn = GetPawn())
-		{
-			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-			ControlledPawn->AddMovementInput(WorldDirection);
-		}
-	}
+	/* Held to Move */
+	// LMB on Non Highlightable Object Pressed -> Held	(마우스 커서가 특정 오브젝트 위에 있지 않고 Input Held 중이면 Click to Move)
+	FollowTime += GetWorld()->GetDeltaSeconds();
+    
+    if (CursorHit.bBlockingHit)
+    {
+    	CachedDestination = CursorHit.ImpactPoint;
+    }
+    if (APawn* ControlledPawn = GetPawn())
+    {
+    	const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+    	ControlledPawn->AddMovementInput(WorldDirection);
+    }
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraASC()
