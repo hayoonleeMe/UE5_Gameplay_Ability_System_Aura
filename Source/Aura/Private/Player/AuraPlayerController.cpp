@@ -7,6 +7,8 @@
 #include "AuraGameplayTags.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
@@ -112,12 +114,47 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (!IsValid(GetAuraASC()))
+	// LMB가 아닌 입력
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
+		if (IsValid(GetAuraASC()))
+		{
+			GetAuraASC()->AbilityInputTagReleased(InputTag);
+		}
 		return;
 	}
 
-	GetAuraASC()->AbilityInputTagReleased(InputTag);
+	/* LMB Input */
+	// Highlightable Object Pressed -> Released (마우스 커서가 특정 오브젝트 위에서 Pressed하고 이후에 Released한다면 특정 어빌리티 활성화)
+	if (bTargeting)
+	{
+		if (GetAuraASC())
+		{
+			GetAuraASC()->AbilityInputTagReleased(InputTag);
+		}
+	}
+	// Non Highlightable Object Pressed -> Released	(마우스 커서가 특정 오브젝트 위에 있지 않으면서 Pressed하고 이후에 Released한다면 AutoRunning)
+	else
+	{
+		const APawn* ControlledPawn = GetPawn();
+		// Non Highlightable Object 위로 짧게 Press하면 Auto Running
+		if (ControlledPawn && FollowTime <= ShortPressThreshold)
+		{
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+			{
+				SplineComponent->ClearSplinePoints();
+				for (const FVector& PointLoc : NavPath->PathPoints)
+				{
+					SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
+				}
+				bAutoRunning = true;
+			}
+		}
+
+		FollowTime = 0.f;
+		bTargeting = false;
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
