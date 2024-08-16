@@ -27,8 +27,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	/* Begin Combat Interface */
+	virtual FVector GetCombatSocketLocation() override;
+	/* End Combat Interface */
+	
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	FName WeaponTipSocketName;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
