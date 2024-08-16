@@ -17,7 +17,7 @@ class AURA_API UAuraProjectileSpell : public UAuraGameplayAbility
 
 protected:
 	UFUNCTION(BlueprintCallable, Category="Aura|Projectile")
-	void SpawnProjectile();
+	void SpawnProjectile(const FVector& ProjectileTargetLocation);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Projectile")
 	TSubclassOf<AAuraProjectile> ProjectileClass;
