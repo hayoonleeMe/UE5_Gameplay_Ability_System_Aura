@@ -4,15 +4,21 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+	
+	AutoRunAcceptanceRadius = 50.f;
+
+	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Component")); 
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -97,6 +103,11 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = CurrentActor != nullptr;
+		bAutoRunning = false;
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -111,12 +122,41 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (!IsValid(GetAuraASC()))
-    {
-    	return;
-    }
+	// LMB가 아닌 입력
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		if (IsValid(GetAuraASC()))
+	    {
+			GetAuraASC()->AbilityInputTagHeld(InputTag);
+	    }
+		return;
+	}
 
-    GetAuraASC()->AbilityInputTagHeld(InputTag);
+	/* LMB Input */
+	// Highlightable Object Pressed -> Held (마우스 커서가 특정 오브젝트 위에 있고 Input Held 중이면 특정 어빌리티 활성화)
+	if (bTargeting)
+	{
+		if (GetAuraASC())
+		{
+			GetAuraASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	// Non Highlightable Object Pressed -> Held	(마우스 커서가 특정 오브젝트 위에 있지 않고 Input Held 중이면 Click to Move)
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraASC()
