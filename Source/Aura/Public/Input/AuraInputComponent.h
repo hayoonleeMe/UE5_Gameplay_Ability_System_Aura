@@ -34,7 +34,7 @@ void UAuraInputComponent::BindAbilityActions(const UAuraInputConfig* InputConfig
 		{
 			if (PressedFunc)
 			{
-				BindAction(Action.InputAction, ETriggerEvent::Started, Object, PressedFunc, Action.InputTag);
+				BindAction(Action.InputAction, ETriggerEvent::Started, Object, PressedFunc, Action.InputTag);	// 바인딩된 함수가 호출될 때 Action.InputTag를 인자로 전달해줌
 			}
 			if (ReleasedFunc)
 			{
