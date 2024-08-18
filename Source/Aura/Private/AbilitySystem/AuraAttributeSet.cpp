@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -86,7 +87,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
-			if (!bFatal)
+			if (bFatal)
+			{
+				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+				{
+					CombatInterface->Die();
+				}
+			}
+			else
 			{
 				// AuraEnemy에 의존하지 않고 Tag를 이용해 Ability를 Activate함.
 				FGameplayTagContainer TagContainer;

@@ -26,6 +26,7 @@ AAuraEnemy::AAuraEnemy()
 
 	Level = 1;
 	BaseWalkSpeed = 250.f;
+	LifeSpan = 5.f;
 }
 
 void AAuraEnemy::HighlightActor()
@@ -45,6 +46,12 @@ void AAuraEnemy::UnHighlightActor()
 int32 AAuraEnemy::GetPlayerLevel()
 {
 	return Level;
+}
+
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
 }
 
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
@@ -94,4 +101,12 @@ void AAuraEnemy::InitAbilityActorInfo()
 void AAuraEnemy::InitializeDefaultAttributes() const
 {
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
+}
+
+void AAuraEnemy::HideHealthBar()
+{
+	if (IsValid(HealthBar))
+	{
+		HealthBar->SetVisibility(false);
+	}
 }

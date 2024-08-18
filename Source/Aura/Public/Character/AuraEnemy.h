@@ -28,6 +28,7 @@ public:
 
 	/* Begin Combat Interface */
 	virtual int32 GetPlayerLevel() override;
+	virtual void Die() override;
 	/* End Combat Interface */
 
 	/* Begin Overlay Widget Controller */
@@ -46,10 +47,14 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Aura|Combat")
 	float BaseWalkSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
+	float LifeSpan;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void HideHealthBar() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Character Class Defaults")
 	int32 Level;

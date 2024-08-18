@@ -44,6 +44,35 @@ UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
+void AAuraCharacterBase::Die()
+{
+	// Detachment는 Replicated Action임 => 서버에서 실행되면 클라이언트로 Replicated 되어 알아서 수행됨
+	WeaponMeshComponent->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	
+	MulticastHandleDeath();
+}
+
+void AAuraCharacterBase::HideHealthBar()
+{
+}
+
+void AAuraCharacterBase::MulticastHandleDeath_Implementation()
+{
+	// Drop Weapon
+	WeaponMeshComponent->SetSimulatePhysics(true);
+	WeaponMeshComponent->SetEnableGravity(true);
+	WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+	// Ragdoll
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	HideHealthBar();
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }
