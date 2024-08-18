@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "AuraProjectile.generated.h"
 
@@ -20,6 +21,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
+
+	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn="true"))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;	// ExposeOnSpawn :  블루프린트의 Spawn Actor 노드에서 해당 변수 핀이 노출됨.
 
 protected:
 	virtual void BeginPlay() override;
