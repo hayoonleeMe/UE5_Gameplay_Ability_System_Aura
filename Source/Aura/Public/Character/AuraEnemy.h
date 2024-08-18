@@ -38,6 +38,14 @@ public:
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 	/* End Overlay Widget Controller */
 
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category="Aura|Combat")
+	bool bHitReacting;
+
+	UPROPERTY(BlueprintReadOnly, Category="Aura|Combat")
+	float BaseWalkSpeed;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;

@@ -29,6 +29,7 @@ protected:
 
 	/* Begin Combat Interface */
 	virtual FVector GetCombatSocketLocation() override;
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	/* End Combat Interface */
 	
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
@@ -62,4 +63,7 @@ protected:
 private:
 	UPROPERTY(EditAnywhere, Category="Aura|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 };
