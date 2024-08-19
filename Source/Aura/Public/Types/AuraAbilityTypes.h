@@ -29,13 +29,8 @@ public:
 
 protected:
 	UPROPERTY()
-	uint8 bIsBlockedHit : 1;
+	bool bIsBlockedHit;
 
 	UPROPERTY()
-	uint8 bIsCriticalHit : 1;
+	bool bIsCriticalHit;
 };
-
-inline bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
-{
-	return FGameplayEffectContext::NetSerialize(Ar, Map, bOutSuccess);
-}
