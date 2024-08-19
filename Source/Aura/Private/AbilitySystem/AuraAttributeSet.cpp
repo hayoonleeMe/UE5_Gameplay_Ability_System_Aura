@@ -235,7 +235,7 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Props.SourceController))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UAuraAttributeSet::ShowFloatingText Called"));
-			AuraPC->ShowDamageNumber(Damage, Props.TargetCharacter);
+			AuraPC->ClientShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
 	}
 }
