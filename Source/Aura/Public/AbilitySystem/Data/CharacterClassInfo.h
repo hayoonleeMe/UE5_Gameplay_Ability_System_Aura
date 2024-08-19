@@ -47,5 +47,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Aura|Common Class Defaults")
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
+	UPROPERTY(EditDefaultsOnly, Category="Aura|Common Class Defaults|Damage")
+	TObjectPtr<UCurveTable> DamageCalculationCoefficients;
+
 	FCharacterClassDefaultInfo GetClassDefaultInfo(const ECharacterClass& CharacterClass);
 };
