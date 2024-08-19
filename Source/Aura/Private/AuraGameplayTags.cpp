@@ -50,8 +50,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.InputTag_3 = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.3")), FString(TEXT("Input Tag for 3 key")));
 	GameplayTags.InputTag_4 = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.4")), FString(TEXT("Input Tag for 4 key")));
 
-	/* Miscellaneous */
+	/* Damage Type Tags */
 	GameplayTags.Damage = Manager.AddNativeGameplayTag(FName(TEXT("Damage")), FString(TEXT("Damage")));
+	GameplayTags.Damage_Fire = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Fire")), FString(TEXT("Fire Damage Type")));
 
+	GameplayTags.DamageTypes.Emplace(GameplayTags.Damage_Fire);
+
+	/* Effect Tags */
 	GameplayTags.Effects_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Effects.HitReact")), FString(TEXT("Tag granted when Hit Reacting")));
 }
