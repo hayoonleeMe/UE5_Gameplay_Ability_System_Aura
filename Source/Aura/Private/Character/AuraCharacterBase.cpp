@@ -52,6 +52,16 @@ void AAuraCharacterBase::Die()
 	MulticastHandleDeath();
 }
 
+bool AAuraCharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* AAuraCharacterBase::GetAvatar_Implementation()
+{
+	return this;
+}
+
 void AAuraCharacterBase::HideHealthBar()
 {
 }
@@ -72,6 +82,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	
 	HideHealthBar();
 	Dissolve();
+	bDead = true;
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()

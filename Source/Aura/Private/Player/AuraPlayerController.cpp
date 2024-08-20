@@ -154,7 +154,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			for (const FVector& PointLoc : NavPath->PathPoints)
 			{
 				SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-				DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
 			}
 
 			if (!NavPath->PathPoints.IsEmpty())
