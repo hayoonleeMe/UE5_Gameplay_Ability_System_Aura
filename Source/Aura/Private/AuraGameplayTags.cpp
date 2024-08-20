@@ -42,6 +42,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Attributes_Secondary_MaxMana = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Secondary.MaxMana")), FString(TEXT("Maximum amount of Mana obtainable")));
 
+	/* Resistance Attributes */
+	GameplayTags.Attributes_Resistance_Fire = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Fire")), FString(TEXT("Resistance to Fire Damage")));
+	GameplayTags.Attributes_Resistance_Lightning = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Lightning")), FString(TEXT("Resistance to Lightning Damage")));
+	GameplayTags.Attributes_Resistance_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Arcane")), FString(TEXT("Resistance to Arcane Damage")));
+	GameplayTags.Attributes_Resistance_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Physical")), FString(TEXT("Resistance to Physical Damage")));
+
 	/* Input Tags */
 	GameplayTags.InputTag_LMB = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.LMB")), FString(TEXT("Input Tag for Left Mouse Button")));
 	GameplayTags.InputTag_RMB = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.RMB")), FString(TEXT("Input Tag for Right Mouse Button")));
@@ -53,8 +59,14 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	/* Damage Type Tags */
 	GameplayTags.Damage = Manager.AddNativeGameplayTag(FName(TEXT("Damage")), FString(TEXT("Damage")));
 	GameplayTags.Damage_Fire = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Fire")), FString(TEXT("Fire Damage Type")));
+	GameplayTags.Damage_Lightning = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Lightning")), FString(TEXT("Lightning Damage Type")));
+	GameplayTags.Damage_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Arcane")), FString(TEXT("Arcane Damage Type")));
+	GameplayTags.Damage_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Physical")), FString(TEXT("Physical Damage Type")));
 
-	GameplayTags.DamageTypes.Emplace(GameplayTags.Damage_Fire);
+	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
+	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 
 	/* Effect Tags */
 	GameplayTags.Effects_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Effects.HitReact")), FString(TEXT("Tag granted when Hit Reacting")));
