@@ -99,7 +99,8 @@ void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 
 	// Blackboard Key 업데이트
-	if (IsValid(AuraAIController))
+	// AuraAIController는 서버에서만 유효함
+	if (IsValid(AuraAIController) && AuraAIController->GetBlackboardComponent())
 	{
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName(TEXT("HitReacting")), bHitReacting);
 	}
