@@ -4,10 +4,13 @@
 #include "Character/AuraEnemy.h"
 
 #include "AuraGameplayTags.h"
+#include "AI/AuraAIController.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
@@ -27,6 +30,21 @@ AAuraEnemy::AAuraEnemy()
 	Level = 1;
 	BaseWalkSpeed = 250.f;
 	LifeSpan = 5.f;
+}
+
+void AAuraEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// AI는 서버에서만 고려, 클라이언트는 Replication의 결과만 본다.
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	AuraAIController = Cast<AAuraAIController>(NewController);
+	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	AuraAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AAuraEnemy::HighlightActor()
