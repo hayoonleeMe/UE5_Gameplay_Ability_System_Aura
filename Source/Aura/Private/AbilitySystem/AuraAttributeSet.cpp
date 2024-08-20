@@ -262,7 +262,15 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
+		// SourceCharacter is AuraCharacter
 		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Props.SourceController))
+		{
+			AuraPC->ClientShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+
+		// SourceCharacter is Enemy, TargetCharacter is AuraCharacter
+		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Props.TargetController))
 		{
 			AuraPC->ClientShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
