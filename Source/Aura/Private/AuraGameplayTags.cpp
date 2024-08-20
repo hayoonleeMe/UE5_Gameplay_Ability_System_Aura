@@ -71,6 +71,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	/* Abilities */
 	GameplayTags.Abilities_Attack = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Attack")), FString(TEXT("Attack Ability Tag")));
 
+	/* Montages */
+	GameplayTags.Montage_Attack_Weapon = Manager.AddNativeGameplayTag(FName(TEXT("Montages.Attack.Weapon")), FString(TEXT("Weapon")));
+	GameplayTags.Montage_Attack_RightHand = Manager.AddNativeGameplayTag(FName(TEXT("Montages.Attack.RightHand")), FString(TEXT("Right Hand")));
+	GameplayTags.Montage_Attack_LeftHand = Manager.AddNativeGameplayTag(FName(TEXT("Montages.Attack.LeftHand")), FString(TEXT("Left Hand")));
+
 	/* Effect Tags */
 	GameplayTags.Effects_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Effects.HitReact")), FString(TEXT("Tag granted when Hit Reacting")));
 }

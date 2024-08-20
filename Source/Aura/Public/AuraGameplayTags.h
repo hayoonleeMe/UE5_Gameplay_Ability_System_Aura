@@ -19,7 +19,6 @@ public:
 
 	static void InitializeNativeGameplayTags();
 
-
 	/*
 	 *	Primary Attributes
 	 */
@@ -75,6 +74,13 @@ public:
 	 *	Abilities
 	 */
 	FGameplayTag Abilities_Attack;
+
+	/*
+	 *	Montages
+	 */
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
 
 	/*
 	 *	Effect Tags
