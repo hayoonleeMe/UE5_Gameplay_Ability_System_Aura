@@ -19,3 +19,13 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	// DamageEffectClass에 저장된 GameplayEffect를 TargetActor에 적용한다.
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 }
+
+FTaggedMontage UAuraDamageGameplayAbility::GetTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const
+{
+	if (!TaggedMontages.IsEmpty())
+	{
+		const int32 RandIndex = FMath::RandRange(0, TaggedMontages.Num() - 1);
+		return TaggedMontages[RandIndex];
+	}
+	return FTaggedMontage();
+}
