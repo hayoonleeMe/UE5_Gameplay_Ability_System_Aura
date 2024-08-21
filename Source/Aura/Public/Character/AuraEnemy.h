@@ -49,7 +49,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Aura|Combat")
 	bool bHitReacting;
 
-	UPROPERTY(BlueprintReadOnly, Category="Aura|Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
 	float BaseWalkSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
