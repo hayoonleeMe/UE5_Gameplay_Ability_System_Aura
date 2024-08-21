@@ -25,7 +25,7 @@ public:
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	/* Begin Combat Interface */
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 	virtual bool IsDead_Implementation() const override;
@@ -46,6 +46,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	FName WeaponTipSocketName;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	FName LeftHandSocketName;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	FName RightHandSocketName;
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TArray<FTaggedMontage> AttackMontages;
