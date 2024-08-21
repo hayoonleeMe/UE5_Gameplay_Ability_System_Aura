@@ -41,7 +41,7 @@ protected:
 
 	virtual void HideHealthBar();
 	
-	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
