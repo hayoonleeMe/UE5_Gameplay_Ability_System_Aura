@@ -30,6 +30,7 @@ public:
 	virtual void Die() override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	/* End Combat Interface */
 
 protected:
@@ -45,6 +46,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	FName WeaponTipSocketName;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	TArray<FTaggedMontage> AttackMontages;
 
 	bool bDead = false;
 
