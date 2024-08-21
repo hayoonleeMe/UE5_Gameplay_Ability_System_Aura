@@ -31,6 +31,7 @@ public:
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
 	/* End Combat Interface */
 
 protected:
@@ -55,6 +56,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TArray<FTaggedMontage> AttackMontages;
+	
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	TObjectPtr<UNiagaraSystem> BloodEffect;
 
 	bool bDead = false;
 
