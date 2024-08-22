@@ -70,6 +70,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	/* Abilities */
 	GameplayTags.Abilities_Attack = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Attack")), FString(TEXT("Attack Ability Tag")));
+	GameplayTags.Abilities_Summon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Summon")), FString(TEXT("Summon Ability Tag")));
 
 	/* Sockets */
 	GameplayTags.CombatSocket_Weapon = Manager.AddNativeGameplayTag(FName(TEXT("CombatSocket.Weapon")), FString(TEXT("Weapon")));

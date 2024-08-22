@@ -69,5 +69,8 @@ public:
 	UNiagaraSystem* GetBloodEffect();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);	
+	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetMinionCount();
 };
