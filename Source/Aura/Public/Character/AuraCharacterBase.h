@@ -56,6 +56,9 @@ protected:
 	FName RightHandSocketName;
 
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	FName TailSocketName;
+
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TArray<FTaggedMontage> AttackMontages;
 	
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
