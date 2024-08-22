@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Aura|Combat")
 	TObjectPtr<UNiagaraSystem> BloodEffect;
 
+	UPROPERTY(EditAnywhere, Category="Aura|Combat")
+	TObjectPtr<USoundBase> DeathSound;
+
 	bool bDead = false;
 
 	UPROPERTY()
