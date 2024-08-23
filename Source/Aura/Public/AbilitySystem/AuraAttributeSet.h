@@ -161,9 +161,13 @@ public:
 	/*
 	 *	Meta Attributes
 	 */
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Mana, Category="Aura|Meta Attributes")
+	UPROPERTY(BlueprintReadOnly, Category="Aura|Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
+
+	UPROPERTY(BlueprintReadOnly, Category="Aura|Meta Attributes")
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingXP);
 
 	/*
 	 *	Rep Notifies
