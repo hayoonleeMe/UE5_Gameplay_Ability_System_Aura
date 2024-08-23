@@ -48,6 +48,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_Resistance_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Arcane")), FString(TEXT("Resistance to Arcane Damage")));
 	GameplayTags.Attributes_Resistance_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Physical")), FString(TEXT("Resistance to Physical Damage")));
 
+	/* Meta Attributes */
+	GameplayTags.Attributes_Meta_IncomingXP = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Meta.IncomingXP")), FString(TEXT("Incoming XP Meta Attribute")));
+	
 	/* Input Tags */
 	GameplayTags.InputTag_LMB = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.LMB")), FString(TEXT("Input Tag for Left Mouse Button")));
 	GameplayTags.InputTag_RMB = Manager.AddNativeGameplayTag(FName(TEXT("InputTag.RMB")), FString(TEXT("Input Tag for Right Mouse Button")));

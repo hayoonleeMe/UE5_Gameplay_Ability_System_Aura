@@ -174,7 +174,8 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	if (HasAuthority())
 	{
 		UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-		AuraASC->AddCharacterAbilities(StartupAbilities);		
+		AuraASC->AddCharacterAbilities(StartupAbilities);
+		AuraASC->AddCharacterPassiveAbilities(PassiveStartupAbilities);
 	}
 }
 
