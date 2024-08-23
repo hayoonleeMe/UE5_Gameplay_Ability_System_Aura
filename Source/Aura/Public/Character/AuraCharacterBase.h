@@ -35,6 +35,7 @@ public:
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	/* End Combat Interface */
 
 protected:
@@ -44,6 +45,9 @@ protected:
 	virtual void MulticastHandleDeath();
 
 	virtual void HideHealthBar();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Character Class Defaults")
+	ECharacterClass CharacterClass;
 
 	/*
 	 *	Combat
