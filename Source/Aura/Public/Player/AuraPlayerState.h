@@ -8,6 +8,9 @@
 #include "AuraPlayerState.generated.h"
 
 class UAttributeSet;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /* StatValue */)
+
 /**
  * 
  */
@@ -21,7 +24,18 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	FOnPlayerStatChanged OnXPChangedDelegate;
+	FOnPlayerStatChanged OnLevelChangedDelegate;
+	
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
+	FORCEINLINE int32 GetXP() const { return XP; }
+
+	void AddToLevel(int32 InLevel);
+	void AddToXP(int32 InXP);
+
+	void SetLevel(int32 InLevel);
+	void SetXP(int32 InXP);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -36,4 +50,10 @@ private:
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_XP)
+	int32 XP;
+
+	UFUNCTION()
+	void OnRep_XP(int32 OldXP);
 };
