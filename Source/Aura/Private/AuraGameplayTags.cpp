@@ -73,6 +73,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Summon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Summon")), FString(TEXT("Summon Ability Tag")));
 	GameplayTags.Abilities_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBolt")), FString(TEXT("FireBolt Ability Tag")));
 
+	/* Cooldown */
+	GameplayTags.Cooldown_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Cooldown.Fire.FireBolt")), FString(TEXT("FireBolt Cooldown Tag")));
+	
 	/* Sockets */
 	GameplayTags.CombatSocket_Weapon = Manager.AddNativeGameplayTag(FName(TEXT("CombatSocket.Weapon")), FString(TEXT("Weapon")));
 	GameplayTags.CombatSocket_RightHand = Manager.AddNativeGameplayTag(FName(TEXT("CombatSocket.RightHand")), FString(TEXT("Right Hand")));
