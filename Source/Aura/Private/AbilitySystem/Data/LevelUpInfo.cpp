@@ -11,3 +11,21 @@ int32 ULevelUpInfo::FindLevelForXP(const int32 XP) const
 	{}
 	return Level;
 }
+
+int32 ULevelUpInfo::FindAttributePointAwardForLevel(const int32 InLevel) const
+{
+	if (InLevel > 0 && InLevel < LevelUpInformation.Num())
+	{
+		return LevelUpInformation[InLevel].AttributePointAward;
+	}
+	return 0;
+}
+
+int32 ULevelUpInfo::FindSpellPointAwardForLevel(const int32 InLevel) const
+{
+	if (InLevel > 0 && InLevel < LevelUpInformation.Num())
+	{
+		return LevelUpInformation[InLevel].SpellPointAward;
+	}
+	return 0;
+}

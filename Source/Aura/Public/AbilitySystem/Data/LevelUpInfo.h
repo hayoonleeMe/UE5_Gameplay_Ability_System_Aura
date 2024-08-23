@@ -38,4 +38,6 @@ public:
 	TArray<FAuraLevelUpInfo> LevelUpInformation;
 
 	int32 FindLevelForXP(const int32 XP) const;
+	int32 FindAttributePointAwardForLevel(const int32 InLevel) const;
+	int32 FindSpellPointAwardForLevel(const int32 InLevel) const;
 };
