@@ -38,6 +38,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(GetAuraASC()->GetAbilityTagFromSpec(AbilitySpec));
 		// Startup Abilities를 GiveAbility할 때 함께 설정한 InputTag를 사용해 AbilityInfo의 InputTag 옵션을 채워준다.
 		Info.InputTag = GetAuraASC()->GetInputTagFromSpec(AbilitySpec);
+		Info.StatusTag = GetAuraASC()->GetStatusTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
 
