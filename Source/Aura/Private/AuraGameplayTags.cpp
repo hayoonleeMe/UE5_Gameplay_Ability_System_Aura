@@ -88,6 +88,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Type_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Type.None")), FString(TEXT("Type None")));
 	
 	GameplayTags.Abilities_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBolt")), FString(TEXT("FireBolt Ability Tag")));
+	GameplayTags.Abilities_Lightning_Electrocute = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Lightning.Electrocute")), FString(TEXT("Electrocute Ability Tag")));
 
 	/* Cooldown */
 	GameplayTags.Cooldown_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Cooldown.Fire.FireBolt")), FString(TEXT("FireBolt Cooldown Tag")));
