@@ -10,22 +10,17 @@
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	const UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-
-	for (const TTuple<FGameplayTag, FGameplayAttribute>& Pair : AS->TagsToAttributes)
+	for (const TTuple<FGameplayTag, FGameplayAttribute>& Pair : GetAuraAS()->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value);
 	}
 
-	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
-	OnAttributePointsChangedDelegate.Broadcast(AuraPlayerState->GetAttributePoints());
+	OnAttributePointsChangedDelegate.Broadcast(GetAuraPS()->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	const UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-
-	for (const TTuple<FGameplayTag, FGameplayAttribute>& Pair : AS->TagsToAttributes)
+	for (const TTuple<FGameplayTag, FGameplayAttribute>& Pair : GetAuraAS()->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value).AddLambda([this, Pair](const FOnAttributeChangeData& Data)
 		{
@@ -33,8 +28,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		});
 	}
 
-	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
-	AuraPlayerState->OnAttributePointsChangedDelegate.AddLambda([this](int32 Points)
+	GetAuraPS()->OnAttributePointsChangedDelegate.AddLambda([this](int32 Points)
 	{
 		OnAttributePointsChangedDelegate.Broadcast(Points);
 	});
@@ -42,8 +36,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
-	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	AuraASC->UpgradeAttribute(AttributeTag);
+	GetAuraASC()->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
