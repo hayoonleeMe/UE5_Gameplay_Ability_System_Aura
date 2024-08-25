@@ -5,7 +5,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
 
@@ -131,6 +133,24 @@ FGameplayTag UAuraAbilitySystemComponent::GetStatusTagFromSpec(const FGameplayAb
 	return FGameplayTag();
 }
 
+FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	// Activatable Ability List에 접근하는 동안 변경되지 않도록 Lock
+	FScopedAbilityListLock ActiveScopeLock(*this);
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability->AbilityTags)
+		{
+			if (Tag.MatchesTagExact(AbilityTag))
+			{
+				return &AbilitySpec;
+			}
+		}
+	}
+	return nullptr;
+}
+
 void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
 	// Attribute 스탯을 찍을 수 있는 Attribute Points가 있을 때만 업그레이드
@@ -156,6 +176,30 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
 	{
 		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
+}
+
+void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
+{
+	// 모든 Ability Information을 체크 => Level에서 가능하면 업데이트
+	if (UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor()))
+	{
+		for (const FAuraAbilityInfo& Info : AbilityInfo->AbilityInformation)
+		{
+			if (!Info.AbilityTag.IsValid() || Level < Info.LevelRequirement)
+			{
+				continue;
+			}
+			
+			// 캐릭터에 등록되지 않은 어빌리티
+			if (!GetSpecFromAbilityTag(Info.AbilityTag))
+			{
+				FGameplayAbilitySpec AbilitySpec(Info.Ability);
+				AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
+				GiveAbility(AbilitySpec);
+				MarkAbilitySpecDirty(AbilitySpec);	// AbilitySpec을 바로 Replicate 
+			}
+		}
 	}
 }
 
