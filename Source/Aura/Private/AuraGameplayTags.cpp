@@ -76,6 +76,17 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	/* Abilities */
 	GameplayTags.Abilities_Attack = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Attack")), FString(TEXT("Attack Ability Tag")));
 	GameplayTags.Abilities_Summon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Summon")), FString(TEXT("Summon Ability Tag")));
+	GameplayTags.Abilities_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.HitReact")), FString(TEXT("HitReact Ability Tag")));
+
+	GameplayTags.Abilities_Status_Locked = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Status.Locked")), FString(TEXT("Locked Status Tag")));
+	GameplayTags.Abilities_Status_Eligible = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Status.Eligible")), FString(TEXT("Eligible Status Tag")));
+	GameplayTags.Abilities_Status_Unlocked = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Status.Unlocked")), FString(TEXT("Unlocked Status Tag")));
+	GameplayTags.Abilities_Status_Equipped = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Status.Equipped")), FString(TEXT("Equipped Status Tag")));
+	
+	GameplayTags.Abilities_Type_Offensive = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Type.Offensive")), FString(TEXT("Type Offensive")));
+	GameplayTags.Abilities_Type_Passive = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Type.Passive")), FString(TEXT("Type Passive")));
+	GameplayTags.Abilities_Type_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Type.None")), FString(TEXT("Type None")));
+	
 	GameplayTags.Abilities_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBolt")), FString(TEXT("FireBolt Ability Tag")));
 
 	/* Cooldown */
