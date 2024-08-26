@@ -19,6 +19,17 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	GetAuraASC()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
 	{
+		// 현재 선택한 Spell Globe의 Ability Status가 업데이트됐을 때
+		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
+		{
+			SelectedAbility.Status = StatusTag;
+			
+			bool bEnableSpendPointButton = false;
+			bool bEnableEquipButton = false;
+			ShouldEnableButtons(StatusTag, CurrentSpellPoints, bEnableSpendPointButton, bEnableEquipButton);
+			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPointButton, bEnableEquipButton);
+		}
+		
 		if (AbilityInfo)
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -30,6 +41,12 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 	GetAuraPS()->OnSpellPointsChangedDelegate.AddLambda([this](int32 Points)
 	{
 		OnSpellPointsChangedDelegate.Broadcast(Points);
+		CurrentSpellPoints = Points;
+		
+		bool bEnableSpendPointButton = false;
+		bool bEnableEquipButton = false;
+		ShouldEnableButtons(SelectedAbility.Status, CurrentSpellPoints, bEnableSpendPointButton, bEnableEquipButton);
+		SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPointButton, bEnableEquipButton);
 	});
 }
 
@@ -52,11 +69,13 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 		AbilityStatusTag = GetAuraASC()->GetStatusTagFromSpec(*AbilitySpec);		
 	}
 
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatusTag;
+	
 	const int32 SpellPoints = GetAuraPS()->GetSpellPoints();
 	bool bEnableSpendPointButton = false;
 	bool bEnableEquipButton = false;
 	ShouldEnableButtons(AbilityStatusTag, SpellPoints, bEnableSpendPointButton, bEnableEquipButton);
-	
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPointButton, bEnableEquipButton);
 }
 
