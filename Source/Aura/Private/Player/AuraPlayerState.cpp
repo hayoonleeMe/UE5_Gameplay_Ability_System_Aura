@@ -22,7 +22,7 @@ AAuraPlayerState::AAuraPlayerState()
 	Level = 1;
 	XP = 1;
 	AttributePoints = 0;
-	SpellPoints = 1;
+	SpellPoints = 0;
 }
 
 void AAuraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

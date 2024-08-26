@@ -74,6 +74,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 
 	/* Abilities */
+	GameplayTags.Abilities_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.None")), FString(TEXT("No Ability - like the nullptr for Ability Tags")));
+	
 	GameplayTags.Abilities_Attack = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Attack")), FString(TEXT("Attack Ability Tag")));
 	GameplayTags.Abilities_Summon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Summon")), FString(TEXT("Summon Ability Tag")));
 	GameplayTags.Abilities_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.HitReact")), FString(TEXT("HitReact Ability Tag")));
