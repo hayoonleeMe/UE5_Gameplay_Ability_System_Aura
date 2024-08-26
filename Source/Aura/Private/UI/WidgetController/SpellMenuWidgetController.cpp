@@ -17,7 +17,7 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
-	GetAuraASC()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetAuraASC()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel)
 	{
 		// 현재 선택한 Spell Globe의 Ability Status가 업데이트됐을 때
 		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
@@ -79,10 +79,18 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPointButton, bEnableEquipButton);
 }
 
-void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatusTag, int32 SpellPoints, bool& bShouldEnableSpendPointButton,
-	bool& bShouldEnableEquipButton)
+void USpellMenuWidgetController::SpendPointButtonPressed()
 {
-	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	if (GetAuraASC())
+	{
+		GetAuraASC()->ServerSpendSpellPoint(SelectedAbility.Ability);
+	}
+}
+
+void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatusTag, int32 SpellPoints, bool& bShouldEnableSpendPointButton,
+                                                     bool& bShouldEnableEquipButton)
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
 	if (AbilityStatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Equipped))
 	{
