@@ -244,10 +244,17 @@ bool UAuraAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag&
 		}
 	}
 
-	// Activatable Ability List에 존재하지 않는 Ability이므로 Locked Ability
+	// Activatable Ability List에 존재하지 않는 Ability
 	if (const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor()))
 	{
-		OutDescription = UAuraGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+		if (!AbilityTag.IsValid() || AbilityTag.MatchesTagExact(FAuraGameplayTags::Get().Abilities_None))
+		{
+			OutDescription = FString();
+		}
+		else
+		{
+			OutDescription = UAuraGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+		}
 		OutNextLevelDescription = FString();
 	}
 	return false;
