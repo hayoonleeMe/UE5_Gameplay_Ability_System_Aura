@@ -42,12 +42,6 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Attributes_Secondary_MaxMana = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Secondary.MaxMana")), FString(TEXT("Maximum amount of Mana obtainable")));
 
-	/* Resistance Attributes */
-	GameplayTags.Attributes_Resistance_Fire = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Fire")), FString(TEXT("Resistance to Fire Damage")));
-	GameplayTags.Attributes_Resistance_Lightning = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Lightning")), FString(TEXT("Resistance to Lightning Damage")));
-	GameplayTags.Attributes_Resistance_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Arcane")), FString(TEXT("Resistance to Arcane Damage")));
-	GameplayTags.Attributes_Resistance_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Physical")), FString(TEXT("Resistance to Physical Damage")));
-
 	/* Meta Attributes */
 	GameplayTags.Attributes_Meta_IncomingXP = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Meta.IncomingXP")), FString(TEXT("Incoming XP Meta Attribute")));
 	
@@ -68,10 +62,29 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Damage_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Arcane")), FString(TEXT("Arcane Damage Type")));
 	GameplayTags.Damage_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Damage.Physical")), FString(TEXT("Physical Damage Type")));
 
+	/* Resistance Attributes */
+	GameplayTags.Attributes_Resistance_Fire = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Fire")), FString(TEXT("Resistance to Fire Damage")));
+	GameplayTags.Attributes_Resistance_Lightning = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Lightning")), FString(TEXT("Resistance to Lightning Damage")));
+	GameplayTags.Attributes_Resistance_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Arcane")), FString(TEXT("Resistance to Arcane Damage")));
+	GameplayTags.Attributes_Resistance_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Resistance.Physical")), FString(TEXT("Resistance to Physical Damage")));
+
+	/* Map of Damage Types to Resistances */
 	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
 	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
 	GameplayTags.DamageTypesToResistances.Emplace(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
+
+	/* Debuffs Tags */
+	GameplayTags.Debuff_Burn = Manager.AddNativeGameplayTag(FName(TEXT("Debuff.Burn")), FString(TEXT("Debuff for Fire Damage")));
+	GameplayTags.Debuff_Stun = Manager.AddNativeGameplayTag(FName(TEXT("Debuff.Stun")), FString(TEXT("Debuff for Lightning Damage")));
+	GameplayTags.Debuff_Arcane = Manager.AddNativeGameplayTag(FName(TEXT("Debuff.Arcane")), FString(TEXT("Debuff for Arcane Damage")));
+	GameplayTags.Debuff_Physical = Manager.AddNativeGameplayTag(FName(TEXT("Debuff.Phsycial")), FString(TEXT("Debuff for Physical Damage")));
+
+	/* Map of Damage Types to Debuffs */
+	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Fire, GameplayTags.Debuff_Burn);
+	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Lightning, GameplayTags.Debuff_Stun);
+	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Arcane, GameplayTags.Debuff_Arcane);
+	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Physical, GameplayTags.Debuff_Physical);
 
 	/* Abilities */
 	GameplayTags.Abilities_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.None")), FString(TEXT("No Ability - like the nullptr for Ability Tags")));
