@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AuraGameplayAbility.h"
 #include "Interaction/CombatInterface.h"
+#include "Types/AuraAbilityTypes.h"
 #include "AuraDamageGameplayAbility.generated.h"
 
 /**
@@ -20,6 +21,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
+
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
