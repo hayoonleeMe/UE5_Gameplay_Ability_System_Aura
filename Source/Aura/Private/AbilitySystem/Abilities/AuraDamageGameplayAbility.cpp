@@ -6,6 +6,14 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 
+UAuraDamageGameplayAbility::UAuraDamageGameplayAbility()
+{
+	DebuffChance = 20.f;
+	DebuffDamage = 5.f;
+	DebuffFrequency = 1.f;
+	DebuffDuration = 5.f;
+}
+
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);

@@ -16,6 +16,8 @@ class AURA_API UAuraDamageGameplayAbility : public UAuraGameplayAbility
 	GENERATED_BODY()
 
 public:
+	UAuraDamageGameplayAbility();
+	
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
 
@@ -28,6 +30,18 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
 	FScalableFloat Damage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float DebuffChance;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float DebuffDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float DebuffFrequency;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float DebuffDuration;
 
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
