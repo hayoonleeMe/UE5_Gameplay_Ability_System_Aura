@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
+#include "Types/AuraAbilityTypes.h"
 #include "AuraProjectile.generated.h"
 
 class UNiagaraSystem;
@@ -22,8 +22,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
-	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn="true"))
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;	// ExposeOnSpawn :  블루프린트의 Spawn Actor 노드에서 해당 변수 핀이 노출됨.
+	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn="true"))	// ExposeOnSpawn :  블루프린트의 Spawn Actor 노드에서 해당 변수 핀이 노출됨.
+	FDamageEffectParams DamageEffectParams;
 
 protected:
 	virtual void BeginPlay() override;
