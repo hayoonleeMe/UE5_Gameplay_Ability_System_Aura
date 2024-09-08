@@ -55,13 +55,24 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 
 public:
 	FAuraGameplayEffectContext()
-		: bIsBlockedHit(false), bIsCriticalHit(false)
+		: bIsBlockedHit(false), bIsCriticalHit(false), bIsSuccessfulDebuff(false), DebuffDamage(0.f), DebuffDuration(0.f), DebuffFrequency(0.f)
 	{}
 	
 	FORCEINLINE bool IsBlockedHit() const { return bIsBlockedHit; }
 	FORCEINLINE bool IsCriticalHit() const { return bIsCriticalHit; }
+	FORCEINLINE bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
+	FORCEINLINE float GetDebuffDamage() const { return DebuffDamage; }
+	FORCEINLINE float GetDebuffDuration() const { return DebuffDuration; }
+	FORCEINLINE float GetDebuffFrequency() const { return DebuffFrequency; }
+	FORCEINLINE TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
+	
 	FORCEINLINE void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
 	FORCEINLINE void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
+	FORCEINLINE void SetIsSuccessfulDebuff(bool bInIsSuccessfulDebuff) { bIsSuccessfulDebuff = bInIsSuccessfulDebuff; }
+	FORCEINLINE void SetDebuffDamage(float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
+	FORCEINLINE void SetDebuffDuration(float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
+	FORCEINLINE void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
+	FORCEINLINE void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -91,6 +102,20 @@ protected:
 
 	UPROPERTY()
 	bool bIsCriticalHit;
+
+	UPROPERTY()
+	bool bIsSuccessfulDebuff;
+
+	UPROPERTY()
+	float DebuffDamage;
+
+	UPROPERTY()
+	float DebuffDuration;
+
+	UPROPERTY()
+	float DebuffFrequency;
+
+	TSharedPtr<FGameplayTag> DamageType;
 };
 
 template<>
