@@ -157,6 +157,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 
 	// PlayerController의 경우 서버에서는 모든 Character에 존재하고, 클라이언트에서는 각 기기의 Locally Controlled Character에만 존재한다.
 	// 따라서 InitAbilityActorInfo()가 서버측인 PossessedBy()에서 호출되면 모든 캐릭터에서 PlayerController가 Valid하겠지만,
