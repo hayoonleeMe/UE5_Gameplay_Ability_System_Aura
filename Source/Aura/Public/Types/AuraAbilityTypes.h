@@ -14,52 +14,52 @@ struct FDamageEffectParams
 		: BaseDamage(0.f), AbilityLevel(1), DebuffChance(0.f), DebuffDamage(0.f), DebuffFrequency(0.f), DebuffDuration(0.f), DeathImpulseMagnitude(0.f), DeathImpulse(FVector::ZeroVector), KnockbackForceMagnitude(0.f), KnockbackChance(0.f), KnockbackForce(FVector::ZeroVector)
 	{}
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UObject> WorldContextObject;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float BaseDamage;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float AbilityLevel;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayTag DamageType;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffChance;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDamage;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffFrequency;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDuration;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeathImpulseMagnitude;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector DeathImpulse;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float KnockbackForceMagnitude;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float KnockbackChance;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector KnockbackForce;
 };
 
