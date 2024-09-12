@@ -13,7 +13,7 @@ UAuraDamageGameplayAbility::UAuraDamageGameplayAbility()
 	DebuffDamage = 5.f;
 	DebuffFrequency = 1.f;
 	DebuffDuration = 5.f;
-	DeathImpulseMagnitude = 60.f;
+	DeathImpulseMagnitude = 15000.f;
 }
 
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
