@@ -11,7 +11,7 @@ struct FDamageEffectParams
 	GENERATED_BODY()
 
 	FDamageEffectParams()
-		: BaseDamage(0.f), AbilityLevel(1), DebuffChance(0.f), DebuffDamage(0.f), DebuffFrequency(0.f), DebuffDuration(0.f), DeathImpulseMagnitude(0.f), DeathImpulse(FVector::ZeroVector)
+		: BaseDamage(0.f), AbilityLevel(1), DebuffChance(0.f), DebuffDamage(0.f), DebuffFrequency(0.f), DebuffDuration(0.f), DeathImpulseMagnitude(0.f), DeathImpulse(FVector::ZeroVector), KnockbackForceMagnitude(0.f), KnockbackChance(0.f), KnockbackForce(FVector::ZeroVector)
 	{}
 
 	UPROPERTY()
@@ -52,6 +52,15 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	FVector DeathImpulse;
+
+	UPROPERTY()
+	float KnockbackForceMagnitude;
+
+	UPROPERTY()
+	float KnockbackChance;
+
+	UPROPERTY()
+	FVector KnockbackForce;
 };
 
 USTRUCT(BlueprintType)
@@ -61,7 +70,7 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 
 public:
 	FAuraGameplayEffectContext()
-		: bIsBlockedHit(false), bIsCriticalHit(false), bIsSuccessfulDebuff(false), DebuffDamage(0.f), DebuffDuration(0.f), DebuffFrequency(0.f), DeathImpulse(FVector::ZeroVector)
+		: bIsBlockedHit(false), bIsCriticalHit(false), bIsSuccessfulDebuff(false), DebuffDamage(0.f), DebuffDuration(0.f), DebuffFrequency(0.f), DeathImpulse(FVector::ZeroVector), KnockbackForce(FVector::ZeroVector)
 	{}
 	
 	FORCEINLINE bool IsBlockedHit() const { return bIsBlockedHit; }
@@ -72,6 +81,7 @@ public:
 	FORCEINLINE float GetDebuffFrequency() const { return DebuffFrequency; }
 	FORCEINLINE TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 	FORCEINLINE FVector GetDeathImpulse() const { return DeathImpulse; }
+	FORCEINLINE FVector GetKnockbackForce() const { return KnockbackForce; }
 	
 	FORCEINLINE void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
 	FORCEINLINE void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
@@ -81,6 +91,7 @@ public:
 	FORCEINLINE void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
 	FORCEINLINE void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType; }
 	FORCEINLINE void SetDeathImpulse(const FVector& InDeathImpulse) { DeathImpulse = InDeathImpulse; }
+	FORCEINLINE void SetKnockbackForce(const FVector& InKnockbackForce) { KnockbackForce = InKnockbackForce; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -108,7 +119,7 @@ protected:
 	UPROPERTY()
 	bool bIsBlockedHit;
 
-	UPROPERTY()
+	UPROPERTY() 
 	bool bIsCriticalHit;
 
 	UPROPERTY()
@@ -127,6 +138,9 @@ protected:
 
 	UPROPERTY()
 	FVector DeathImpulse;
+
+	UPROPERTY()
+	FVector KnockbackForce;
 };
 
 template<>

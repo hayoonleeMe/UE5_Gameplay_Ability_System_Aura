@@ -14,6 +14,7 @@ UAuraDamageGameplayAbility::UAuraDamageGameplayAbility()
 	DebuffFrequency = 1.f;
 	DebuffDuration = 5.f;
 	DeathImpulseMagnitude = 15000.f;
+	KnockbackForceMagnitude = 500.f;
 }
 
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
@@ -42,6 +43,8 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DebuffFrequency = DebuffFrequency;
 	Params.DebuffDuration = DebuffDuration;
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
+	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
+	Params.KnockbackChance = KnockbackChance;
 	return Params;
 }
 

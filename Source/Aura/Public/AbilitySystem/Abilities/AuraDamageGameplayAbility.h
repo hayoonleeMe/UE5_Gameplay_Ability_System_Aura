@@ -49,6 +49,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
 	float DeathImpulseMagnitude;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float KnockbackForceMagnitude;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float KnockbackChance;
+
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
 };
