@@ -13,6 +13,7 @@ UAuraDamageGameplayAbility::UAuraDamageGameplayAbility()
 	DebuffDamage = 5.f;
 	DebuffFrequency = 1.f;
 	DebuffDuration = 5.f;
+	DeathImpulseMagnitude = 60.f;
 }
 
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
@@ -40,6 +41,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DebuffDamage = DebuffDamage;
 	Params.DebuffFrequency = DebuffFrequency;
 	Params.DebuffDuration = DebuffDuration;
+	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 	return Params;
 }
 

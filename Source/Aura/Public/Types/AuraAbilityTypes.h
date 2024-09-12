@@ -11,7 +11,7 @@ struct FDamageEffectParams
 	GENERATED_BODY()
 
 	FDamageEffectParams()
-		: BaseDamage(0.f), AbilityLevel(1), DebuffChance(0.f), DebuffDamage(0.f), DebuffFrequency(0.f), DebuffDuration(0.f)
+		: BaseDamage(0.f), AbilityLevel(1), DebuffChance(0.f), DebuffDamage(0.f), DebuffFrequency(0.f), DebuffDuration(0.f), DeathImpulseMagnitude(0.f)
 	{}
 
 	UPROPERTY()
@@ -46,6 +46,9 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	float DebuffDuration;
+
+	UPROPERTY()
+	float DeathImpulseMagnitude;
 };
 
 USTRUCT(BlueprintType)
