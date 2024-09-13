@@ -28,4 +28,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Aura|FireBolt")
 	int32 MaxNumProjectiles;
+
+	UPROPERTY(EditDefaultsOnly, Category="Aura|FireBolt")
+	float HomingAccelerationMin;
+
+	UPROPERTY(EditDefaultsOnly, Category="Aura|FireBolt")
+	float HomingAccelerationMax;
+
+	UPROPERTY(EditDefaultsOnly, Category="Aura|FireBolt")
+	bool bLaunchHomingProjectiles;
 };

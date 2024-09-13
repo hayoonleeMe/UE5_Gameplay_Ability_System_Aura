@@ -5,12 +5,16 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UAuraFireBolt::UAuraFireBolt()
 {
 	ProjectileSpread = 90.f;
 	MaxNumProjectiles = 5;
+	HomingAccelerationMin = 1600.f;
+	HomingAccelerationMax = 3200.f;
+	bLaunchHomingProjectiles = true;
 }
 
 FString UAuraFireBolt::GetDescription(int32 Level)
@@ -127,7 +131,7 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		Rotation.Pitch = PitchOverride;
 	}
 
-	//NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
+	NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
 	const FVector Forward = Rotation.Vector();
 	TArray<FRotator> Rotations = UAuraAbilitySystemLibrary::GetEvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, NumProjectiles);
 	for (const FRotator& Rot : Rotations)
@@ -139,6 +143,24 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		if (AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn))
 		{
 			Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+
+			if (IsValid(HomingTarget) && HomingTarget->Implements<UCombatInterface>())
+			{
+				// HomingTargetComponent가 Weak Ptr인 이유
+				// 유도를 위해 HomingTargetComponent가 특정 오브젝트를 참조할 때, 그 특정 오브젝트의 제거에 영향을 주면 안되므로.
+				// (No Effect to Referencing Count, Garbage Collection)
+				Projectile->ProjectileMovementComponent->HomingTargetComponent = HomingTarget->GetRootComponent();
+			}
+			else
+			{
+				// 새로 생성한 USceneComponent가 Garbage Collection에 의해 제거되도록 만들기 위해 Projectile의 프로퍼티로 저장한 뒤 사용한다.
+				// HomingTargetComponent는 Weak Ptr이므로 이와는 상관없이 Projectile이 제거될 때 같이 제거된다.
+				Projectile->HomingTargetSceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+				Projectile->HomingTargetSceneComponent->SetWorldLocation(ProjectileTargetLocation);
+				Projectile->ProjectileMovementComponent->HomingTargetComponent = Projectile->HomingTargetSceneComponent;
+			}
+			Projectile->ProjectileMovementComponent->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+			Projectile->ProjectileMovementComponent->bIsHomingProjectile = bLaunchHomingProjectiles;
 			Projectile->FinishSpawning(SpawnTransform);
 		}
 	}

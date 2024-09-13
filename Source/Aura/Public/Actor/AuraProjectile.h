@@ -25,6 +25,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn="true"))	// ExposeOnSpawn :  블루프린트의 Spawn Actor 노드에서 해당 변수 핀이 노출됨.
 	FDamageEffectParams DamageEffectParams;
 
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetSceneComponent;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
