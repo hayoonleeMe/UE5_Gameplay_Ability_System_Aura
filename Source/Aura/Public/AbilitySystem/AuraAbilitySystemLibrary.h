@@ -113,6 +113,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Aura|Damage Effect")
 	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& Params);
+
+	UFUNCTION(BlueprintPure, Category="Aura|Gameplay Mechanics")
+	static TArray<FRotator> GetEvenlySpacedRotators(const FVector& Forward, const FVector& Axis, float Spread, int32 NumRotators);
+
+	UFUNCTION(BlueprintPure, Category="Aura|Gameplay Mechanics")
+	static TArray<FVector> GetEvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors);
 	
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel);
 };
