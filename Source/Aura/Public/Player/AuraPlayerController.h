@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -86,6 +87,9 @@ private:
 	TObjectPtr<USplineComponent> SplineComponent;
 
 	void AutoRun();
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	UPROPERTY(EditDefaultsOnly, Category="Aura|Damage Text")
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass; 
