@@ -12,8 +12,8 @@ UAuraFireBolt::UAuraFireBolt()
 {
 	ProjectileSpread = 90.f;
 	MaxNumProjectiles = 5;
-	HomingAccelerationMin = 1600.f;
-	HomingAccelerationMax = 3200.f;
+	HomingAccelerationMin = 6500.f;
+	HomingAccelerationMax = 7800.f;
 	bLaunchHomingProjectiles = true;
 }
 

@@ -104,5 +104,6 @@ void AAuraProjectile::SpawnImpactEffects() const
 	if (IsValid(LoopingSoundComponent))
 	{
 		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
 	}
 }
