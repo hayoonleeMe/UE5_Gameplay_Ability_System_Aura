@@ -134,6 +134,11 @@ FOnDeathDelegate& AAuraCharacterBase::GetOnDeathDelegate()
 	return OnDeathDelegate;
 }
 
+USkeletalMeshComponent* AAuraCharacterBase::GetWeaponMeshComponent_Implementation()
+{
+	return WeaponMeshComponent;
+}
+
 void AAuraCharacterBase::HideHealthBar()
 {
 }
