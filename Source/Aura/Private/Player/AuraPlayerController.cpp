@@ -83,6 +83,12 @@ void AAuraPlayerController::SetupInputComponent()
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	// Block Input Pressed
+	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
+	
 	const FVector2D InputAxisValue = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation = FRotator(0.f, Rotation.Yaw, 0.f);
@@ -100,6 +106,22 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
+	// Block Cursor Trace
+	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_CursorTrace))
+	{
+		if (LastActor)
+		{
+			LastActor->UnHighlightActor();
+		}
+		if (CurrentActor)
+		{
+			CurrentActor->UnHighlightActor();
+		}
+		LastActor = nullptr;
+		CurrentActor = nullptr;
+		return;
+	}
+	
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit)
 	{
@@ -124,6 +146,12 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	// Block Input Pressed
+	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
+
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = CurrentActor != nullptr;
@@ -137,6 +165,12 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	// Block Input Released
+	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
+	
 	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Released (마우스 커서가 특정 오브젝트 위에서 Pressed하고 이후에 Released한다면 특정 어빌리티 활성화)
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting || bShiftKeyDown)
 	{
@@ -167,7 +201,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			}
 			bAutoRunning = true;
 		}
-		if (ClickNiagaraSystem)
+		if (ClickNiagaraSystem && GetAuraASC() && !GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
 		{
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
@@ -179,6 +213,12 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+	// Block Input Held
+	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputHeld))
+	{
+		return;
+	}
+	
 	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Held (마우스 커서가 특정 오브젝트 위에 있고 Input Held 중이면 특정 어빌리티 활성화)
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting || bShiftKeyDown)
 	{

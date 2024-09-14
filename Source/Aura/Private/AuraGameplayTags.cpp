@@ -127,4 +127,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	/* Effect Tags */
 	GameplayTags.Effects_HitReact = Manager.AddNativeGameplayTag(FName(TEXT("Effects.HitReact")), FString(TEXT("Tag granted when Hit Reacting")));
+
+	/* Player Tags */
+	GameplayTags.Player_Block_InputPressed = Manager.AddNativeGameplayTag(FName(TEXT("Player.Block.InputPressed")), FString(TEXT("Block input pressed callback for input")));
+	GameplayTags.Player_Block_InputHeld = Manager.AddNativeGameplayTag(FName(TEXT("Player.Block.InputHeld")), FString(TEXT("Block input held callback for input")));
+	GameplayTags.Player_Block_InputReleased = Manager.AddNativeGameplayTag(FName(TEXT("Player.Block.InputReleased")), FString(TEXT("Block input released callback for input")));
+	GameplayTags.Player_Block_CursorTrace = Manager.AddNativeGameplayTag(FName(TEXT("Player.Block.CursorTrace")), FString(TEXT("Block tracing under the cursor")));
 }
