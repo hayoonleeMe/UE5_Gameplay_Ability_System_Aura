@@ -15,6 +15,8 @@ class AURA_API UAuraBeamSpell : public UAuraDamageGameplayAbility
 	GENERATED_BODY()
 
 public:
+	UAuraBeamSpell();
+	
 	UFUNCTION(BlueprintCallable)
 	void StoreMouseDataInfo(const FHitResult& HitResult);
 
@@ -23,6 +25,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void TraceFirstTarget(const FVector& BeamTargetLocation);
+	
+	UFUNCTION(BlueprintCallable)
+	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, Category="Aura|Beam")
@@ -36,4 +41,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category="Aura|Beam")
 	TObjectPtr<ACharacter> OwnerCharacter;
+
+	UPROPERTY(EditDefaultsOnly, Category="Aura|Beam")
+	int32 MaxNumShockTargets;
 };
