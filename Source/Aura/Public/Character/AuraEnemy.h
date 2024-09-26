@@ -50,9 +50,6 @@ public:
 	bool bHitReacting;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
-	float BaseWalkSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
 	float LifeSpan;
 
 	UPROPERTY(BlueprintReadWrite, Category="Aura|Combat")
@@ -63,6 +60,7 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void HideHealthBar() override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Character Class Defaults")
 	int32 Level;

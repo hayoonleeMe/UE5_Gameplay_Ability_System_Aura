@@ -24,6 +24,7 @@ public:
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/* Begin Combat Interface */
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& SocketTag) override;
@@ -45,6 +46,12 @@ public:
 	FOnASCRegistered OnAscRegistered;
 	FOnDeathDelegate OnDeathDelegate;
 
+	UPROPERTY(ReplicatedUsing=OnRep_IsStunned, BlueprintReadOnly)
+	bool bIsStunned;
+
+	UFUNCTION()
+	virtual void OnRep_IsStunned();
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -84,6 +91,11 @@ protected:
 	TObjectPtr<USoundBase> DeathSound;
 
 	bool bDead = false;
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
+	float BaseWalkSpeed;
 
 	/*
 	 *	Minions
