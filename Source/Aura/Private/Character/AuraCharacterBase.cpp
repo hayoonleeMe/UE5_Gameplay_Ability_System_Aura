@@ -74,6 +74,7 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
 	DOREPLIFETIME(AAuraCharacterBase, bIsStunned);
 	DOREPLIFETIME(AAuraCharacterBase, bIsBurned);
+	DOREPLIFETIME(AAuraCharacterBase, bIsShocked);
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& SocketTag)
@@ -172,6 +173,16 @@ FOnDeathDelegate& AAuraCharacterBase::GetOnDeathDelegate()
 USkeletalMeshComponent* AAuraCharacterBase::GetWeaponMeshComponent_Implementation()
 {
 	return WeaponMeshComponent;
+}
+
+bool AAuraCharacterBase::IsShocked_Implementation() const
+{
+	return bIsShocked;
+}
+
+void AAuraCharacterBase::SetIsShocked_Implementation(bool bInIsShocked)
+{
+	bIsShocked = bInIsShocked;
 }
 
 void AAuraCharacterBase::HideHealthBar()
