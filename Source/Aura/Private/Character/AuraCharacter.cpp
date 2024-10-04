@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -163,11 +164,27 @@ void AAuraCharacter::OnRep_IsStunned()
 		if (bIsStunned)
 		{
 			AuraASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Activate();
 		}
 		else
 		{
 			AuraASC->RemoveLooseGameplayTags(BlockedTags);	
+			StunDebuffComponent->Deactivate();
 		}
+	}
+}
+
+void AAuraCharacter::OnRep_IsBurned()
+{
+	Super::OnRep_IsBurned();
+
+	if (bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
 	}
 }
 
@@ -178,6 +195,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
 	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Stun).AddUObject(this, &ThisClass::StunTagChanged);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Burn).AddUObject(this, &ThisClass::BurnTagChanged);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 	OnAscRegistered.Broadcast(AbilitySystemComponent);

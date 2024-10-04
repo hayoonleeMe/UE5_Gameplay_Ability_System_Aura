@@ -52,6 +52,12 @@ public:
 	UFUNCTION()
 	virtual void OnRep_IsStunned();
 	
+	UPROPERTY(ReplicatedUsing=OnRep_IsBurned, BlueprintReadOnly)
+	bool bIsBurned;
+
+	UFUNCTION()
+	virtual void OnRep_IsBurned();
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -93,6 +99,7 @@ protected:
 	bool bDead = false;
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	virtual void BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Combat")
 	float BaseWalkSpeed;
@@ -146,6 +153,9 @@ protected:
 	 */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Aura|Abilities")

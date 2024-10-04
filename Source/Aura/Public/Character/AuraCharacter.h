@@ -45,6 +45,7 @@ public:
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 
 	virtual void OnRep_IsStunned() override;
+	virtual void OnRep_IsBurned() override;
 
 private:
 	UPROPERTY(VisibleAnywhere)
