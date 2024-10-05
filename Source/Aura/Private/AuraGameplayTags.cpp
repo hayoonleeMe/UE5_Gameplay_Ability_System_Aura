@@ -91,7 +91,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Arcane, GameplayTags.Debuff_Arcane);
 	GameplayTags.DamageTypesToDebuffs.Emplace(GameplayTags.Damage_Physical, GameplayTags.Debuff_Physical);
 
-	/* Abilities */
+	/* Abilities (Active) */
 	GameplayTags.Abilities_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.None")), FString(TEXT("No Ability - like the nullptr for Ability Tags")));
 	
 	GameplayTags.Abilities_Attack = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Attack")), FString(TEXT("Attack Ability Tag")));
@@ -109,6 +109,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Abilities_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBolt")), FString(TEXT("FireBolt Ability Tag")));
 	GameplayTags.Abilities_Lightning_Electrocute = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Lightning.Electrocute")), FString(TEXT("Electrocute Ability Tag")));
+
+	/* Abilities (Passive) */
+	GameplayTags.Abilities_Passive_HaloOfProtection = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Passive.HaloOfProtection")), FString(TEXT("Halo Of Protection")));
+	GameplayTags.Abilities_Passive_LifeSiphon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Passive.LifeSiphon")), FString(TEXT("Life Siphon")));
+	GameplayTags.Abilities_Passive_ManaSiphon = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Passive.ManaSiphon")), FString(TEXT("Mana Siphon")));
 
 	/* Cooldown */
 	GameplayTags.Cooldown_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Cooldown.Fire.FireBolt")), FString(TEXT("FireBolt Cooldown Tag")));
