@@ -6,6 +6,7 @@
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -36,6 +37,18 @@ AAuraCharacterBase::AAuraCharacterBase()
 	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("Stun Debuff Component"));
 	StunDebuffComponent->SetupAttachment(GetRootComponent());
 	StunDebuffComponent->DebuffTag = FAuraGameplayTags::Get().Debuff_Stun;
+
+	/* Passive Niagara Component */
+	EffectAttachComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Effect Attach Point"));
+	EffectAttachComponent->SetupAttachment(GetRootComponent());
+	EffectAttachComponent->SetWorldRotation(FRotator::ZeroRotator);
+	EffectAttachComponent->SetUsingAbsoluteRotation(true);
+	HaloOfProtectionNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>(TEXT("Halo Of Protection Component"));
+	HaloOfProtectionNiagaraComponent->SetupAttachment(EffectAttachComponent);
+	LifeSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>(TEXT("Life Siphon Component"));
+	LifeSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
+	ManaSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>(TEXT("Mana Siphon Component"));
+	ManaSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
