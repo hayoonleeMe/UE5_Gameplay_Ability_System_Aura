@@ -42,6 +42,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Attributes_Secondary_MaxMana = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Secondary.MaxMana")), FString(TEXT("Maximum amount of Mana obtainable")));
 
+	/* Vital Attributes */
+	GameplayTags.Attributes_Vital_Health = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Vital.Health")), FString(TEXT("Amount of damage a player can take before death")));
+	GameplayTags.Attributes_Vital_Mana = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Vital.Mana")), FString(TEXT("Amount of energy a player can use to cast spells")));
+
 	/* Meta Attributes */
 	GameplayTags.Attributes_Meta_IncomingXP = Manager.AddNativeGameplayTag(FName(TEXT("Attributes.Meta.IncomingXP")), FString(TEXT("Incoming XP Meta Attribute")));
 	

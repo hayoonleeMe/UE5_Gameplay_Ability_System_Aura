@@ -223,6 +223,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// Double damage plus a bonus if critical hit
 	Damage = bCriticalHit ? Damage * 2.f + SourceCriticalHitDamage : Damage;
 
+	// Decrease damage by 20% if Target activate Halo of Protection Passive Ability
+	const bool bDecrease = TargetTags->HasTagExact(GameplayTags.Abilities_Passive_HaloOfProtection);
+	Damage = bDecrease ? Damage * 0.8f : Damage;
+
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
 }

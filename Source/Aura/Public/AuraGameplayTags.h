@@ -42,6 +42,12 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 
 	/*
+	 *	Vital Attributes
+	 */
+	FGameplayTag Attributes_Vital_Health;
+	FGameplayTag Attributes_Vital_Mana;
+
+	/*
 	 *	Meta Attributes
 	 */
 	FGameplayTag Attributes_Meta_IncomingXP;

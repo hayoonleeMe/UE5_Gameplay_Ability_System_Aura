@@ -236,6 +236,13 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
+		// Source Character가 GA_Lifesiphon을 활성화 중이면 데미지의 10%를 회복
+		if (Props.SourceASC->HasMatchingGameplayTag(FAuraGameplayTags::Get().Abilities_Passive_LifeSiphon))
+		{
+			const float HealAmount = LocalIncomingDamage * 0.2f;
+			SendLifeSiphonEvent(Props, HealAmount);
+		}
+
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
 		{
@@ -431,4 +438,13 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 		
 	}
+}
+
+void UAuraAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props, float HealAmount)
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	FGameplayEventData Payload;
+	Payload.EventTag = GameplayTags.Attributes_Vital_Health;
+	Payload.EventMagnitude = HealAmount;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Health, Payload);
 }
