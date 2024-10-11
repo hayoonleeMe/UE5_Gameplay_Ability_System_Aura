@@ -17,6 +17,7 @@ void AMagicCircle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	MagicCircleDecal->AddLocalRotation(FRotator(0.f, 0.f, DeltaTime * 8.f));
 }
 
 void AMagicCircle::BeginPlay()
