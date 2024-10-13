@@ -155,12 +155,18 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		checkf(TagsToCaptureDefs.Contains(ResistanceTag), TEXT("TagsToCaptureDefs doesn't contain Tag: [%s] in ExecCalc_Damage"), *ResistanceTag.ToString());
 		const FGameplayEffectAttributeCaptureDefinition CaptureDef = TagsToCaptureDefs[ResistanceTag];
 
+		// GetSetByCallerMagnitude()에서 못찾으면 0 반환.
+		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag, false);
+		if (DamageTypeValue <= 0.f)
+		{
+			continue;
+		}
+		
 		float Resistance = 0.f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureDef, EvaluationParameters, Resistance);
 		Resistance = FMath::Clamp(Resistance, 0.f, 100.f);
 
-		// GetSetByCallerMagnitude()에서 못찾으면 0 반환.
-		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag, false) * (100.f - Resistance) / 100.f;
+		DamageTypeValue *= (100.f - Resistance) / 100.f;;
 
 		// Radial Damage
 		if (UAuraAbilitySystemLibrary::IsRadialDamage(EffectContextHandle))
