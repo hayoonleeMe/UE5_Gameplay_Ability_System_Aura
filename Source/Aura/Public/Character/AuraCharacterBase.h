@@ -26,6 +26,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	/* Begin Combat Interface */
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& SocketTag) override;
@@ -44,10 +45,12 @@ public:
 	virtual USkeletalMeshComponent* GetWeaponMeshComponent_Implementation() override;
 	virtual bool IsShocked_Implementation() const override;
 	virtual void SetIsShocked_Implementation(bool bInIsShocked) override;
+	virtual FOnDamageDelegate& GetOnDamageDelegate() override;
 	/* End Combat Interface */
 
 	FOnASCRegistered OnAscRegistered;
 	FOnDeathDelegate OnDeathDelegate;
+	FOnDamageDelegate OnDamageDelegate;
 
 	UPROPERTY(ReplicatedUsing=OnRep_IsStunned, BlueprintReadOnly)
 	bool bIsStunned;
