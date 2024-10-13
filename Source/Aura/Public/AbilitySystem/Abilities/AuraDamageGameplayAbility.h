@@ -59,6 +59,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
 	float KnockbackChance;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	bool bIsRadialDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float RadialDamageInnerRadius;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	float RadialDamageOuterRadius;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Aura|Damage")
+	FVector RadialDamageOrigin;
+
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
 };
