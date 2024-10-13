@@ -4,6 +4,7 @@
 #include "Actor/PointCollection.h"
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/Aura.h"
 #include "Kismet/KismetMathLibrary.h"
 
 APointCollection::APointCollection()
@@ -78,7 +79,8 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActors(IgnoreActors);
 		FHitResult HitResult;
-		GetWorld()->LineTraceSingleByProfile(HitResult, RaisedLocation, LoweredLocation, FName(TEXT("BlockAll")), QueryParams);
+		//GetWorld()->LineTraceSingleByProfile(HitResult, RaisedLocation, LoweredLocation, FName(TEXT("BlockAll")), QueryParams);
+		GetWorld()->LineTraceSingleByChannel(HitResult, RaisedLocation, LoweredLocation, ECC_ExcludePlayers, QueryParams);
 		
 		const FVector AdjustedLocation = FVector(Point->GetComponentLocation().X, Point->GetComponentLocation().Y, HitResult.ImpactPoint.Z);
 		Point->SetWorldLocation(AdjustedLocation);
