@@ -97,11 +97,12 @@ TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
 		AAuraFireBall* FireBall = GetWorld()->SpawnActorDeferred<AAuraFireBall>(
 			FireBallClass,
 			SpawnTransform,
-			GetOwningActorFromActorInfo(),
+			GetAvatarActorFromActorInfo(),
 			CurrentActorInfo->PlayerController->GetPawn(),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 		);
 		FireBall->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+		FireBall->ExplosionDamageParams = MakeDamageEffectParamsFromClassDefaults();
 		FireBall->ActorToReturn = GetAvatarActorFromActorInfo();
 		FireBall->FinishSpawning(SpawnTransform);
 		
