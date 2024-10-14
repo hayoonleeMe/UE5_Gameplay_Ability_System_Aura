@@ -38,6 +38,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SpawnImpactEffects() const;
 
+	bool IsValidOverlap(AActor* OtherActor);
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> SphereComponent;

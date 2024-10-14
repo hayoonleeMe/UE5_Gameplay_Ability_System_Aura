@@ -63,29 +63,26 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                                       bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!IsValidOverlap(OtherActor))
+	{
+		return;
+	}
+	
 	if (HasAuthority())
 	{
-		if (IsValid(OtherActor))
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
-			if (!IsValid(SourceAvatarActor) || SourceAvatarActor == OtherActor || !UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor))
+			DamageEffectParams.DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
+			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
+			if (bKnockback)
 			{
-				return;
+				FRotator Rotation = GetActorRotation();
+				Rotation.Pitch = 45.f;
+				const FVector KnockbackDirection = Rotation.Vector();
+				DamageEffectParams.KnockbackForce = KnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
 			}
-			if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
-			{
-				DamageEffectParams.DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
-				const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
-				if (bKnockback)
-				{
-					FRotator Rotation = GetActorRotation();
-					Rotation.Pitch = 45.f;
-					const FVector KnockbackDirection = Rotation.Vector();
-					DamageEffectParams.KnockbackForce = KnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
-				}
-				DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
-				UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
-			}
+			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
+			UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 		
 		Destroy();
@@ -107,4 +104,10 @@ void AAuraProjectile::SpawnImpactEffects() const
 		LoopingSoundComponent->Stop();
 		LoopingSoundComponent->DestroyComponent();
 	}
+}
+
+bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
+{
+	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	return IsValid(OtherActor) && IsValid(SourceAvatarActor) && SourceAvatarActor != OtherActor && UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor);
 }
