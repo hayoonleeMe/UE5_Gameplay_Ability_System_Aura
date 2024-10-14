@@ -67,26 +67,22 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	{
 		return;
 	}
-	
-	if (HasAuthority())
+	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
-		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		DamageEffectParams.DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
+		const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
+		if (bKnockback)
 		{
-			DamageEffectParams.DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
-			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
-			if (bKnockback)
-			{
-				FRotator Rotation = GetActorRotation();
-				Rotation.Pitch = 45.f;
-				const FVector KnockbackDirection = Rotation.Vector();
-				DamageEffectParams.KnockbackForce = KnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
-			}
-			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
-			UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
+			FRotator Rotation = GetActorRotation();
+			Rotation.Pitch = 45.f;
+			const FVector KnockbackDirection = Rotation.Vector();
+			DamageEffectParams.KnockbackForce = KnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
 		}
-		
-		Destroy();
+		DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
+		UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 	}
+		
+	Destroy();
 }
 
 void AAuraProjectile::SpawnImpactEffects() const
@@ -108,6 +104,10 @@ void AAuraProjectile::SpawnImpactEffects() const
 
 bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
 {
+	if (!HasAuthority())
+	{
+		return false;
+	}
 	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	return IsValid(OtherActor) && IsValid(SourceAvatarActor) && SourceAvatarActor != OtherActor && UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor);
 }
