@@ -112,6 +112,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Type_None = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Type.None")), FString(TEXT("Type None")));
 	
 	GameplayTags.Abilities_Fire_FireBolt = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBolt")), FString(TEXT("FireBolt Ability Tag")));
+	GameplayTags.Abilities_Fire_FireBlast = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Fire.FireBlast")), FString(TEXT("FireBlast Ability Tag")));
 	GameplayTags.Abilities_Lightning_Electrocute = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Lightning.Electrocute")), FString(TEXT("Electrocute Ability Tag")));
 	GameplayTags.Abilities_Arcane_ArcaneShards = Manager.AddNativeGameplayTag(FName(TEXT("Abilities.Arcane.ArcaneShards")), FString(TEXT("ArcaneShards Ability Tag")));
 
