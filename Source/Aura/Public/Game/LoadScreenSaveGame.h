@@ -36,5 +36,8 @@ public:
 	FString PlayerName;
 
 	UPROPERTY()
+	FString MapName;
+
+	UPROPERTY()
 	ESaveSlotStatus SaveSlotStatus;
 };
