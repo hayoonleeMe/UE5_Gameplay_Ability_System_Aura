@@ -13,8 +13,10 @@ void ALoadScreenHUD::BeginPlay()
 
 	check(LoadScreenViewModelClass);
 	LoadScreenViewModel = NewObject<UMVVM_LoadScreen>(this, LoadScreenViewModelClass);
+	LoadScreenViewModel->InitializeLoadSlots();
 
 	check(LoadScreenWidgetClass);
 	LoadScreenWidget = CreateWidget<ULoadScreenWidget>(GetWorld(), LoadScreenWidgetClass);
 	LoadScreenWidget->AddToViewport();
+	LoadScreenWidget->BlueprintInitializeWidget();
 }
