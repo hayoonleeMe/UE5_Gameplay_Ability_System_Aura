@@ -24,3 +24,15 @@ UMVVM_LoadSlot* UMVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) const
 	}
 	return nullptr;
 }
+
+void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredName)
+{
+}
+
+void UMVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
+{
+}
+
+void UMVVM_LoadScreen::SelectSlotButtonPressed(int32 Slot)
+{
+}	
