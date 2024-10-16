@@ -43,4 +43,34 @@ public:
 	
 	UPROPERTY()
 	ESaveSlotStatus SaveSlotStatus;
+
+	/*
+	 *	Player
+	 */
+	UPROPERTY()
+	int32 PlayerLevel;
+
+	UPROPERTY()
+	int32 XP;
+
+	UPROPERTY()
+	int32 SpellPoints;
+
+	UPROPERTY()
+	int32 AttributePoints;
+
+	/*
+	 *	Attributes
+	 */
+	UPROPERTY()
+	float Strength;
+
+	UPROPERTY()
+	float Intelligence;
+
+	UPROPERTY()
+	float Resilience;
+
+	UPROPERTY()
+	float Vigor;
 };
