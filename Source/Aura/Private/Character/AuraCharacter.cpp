@@ -10,8 +10,11 @@
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
@@ -166,6 +169,18 @@ void AAuraCharacter::HideMagicCircle_Implementation()
 	{
 		AuraPlayerController->HideMagicCircle();
 		AuraPlayerController->SetShowMouseCursor(true);
+	}
+}
+
+void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+{
+	if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		if (ULoadScreenSaveGame* SaveObject = AuraGameMode->RetrieveInGameSaveData())
+		{
+			SaveObject->PlayerStartTag = CheckpointTag;
+			AuraGameMode->SaveInGameProgressData(SaveObject);
+		}		
 	}
 }
 

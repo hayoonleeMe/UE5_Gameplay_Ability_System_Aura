@@ -41,6 +41,7 @@ public:
 	virtual void LevelUp_Implementation() override;
 	virtual void ShowMagicCircle_Implementation(UMaterialInstance* DecalMaterial) override;
 	virtual void HideMagicCircle_Implementation() override;
+	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;
 	/* End Player Interface */
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
