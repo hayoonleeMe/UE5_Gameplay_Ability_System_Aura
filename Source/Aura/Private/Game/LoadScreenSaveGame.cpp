@@ -10,13 +10,15 @@ ULoadScreenSaveGame::ULoadScreenSaveGame()
 	bFirstTimeLoadIn = true;
 }
 
-bool ULoadScreenSaveGame::GetSavedMapWithMapName(const FString& InMapName, FSavedMap& OutSavedMap)
+bool ULoadScreenSaveGame::GetSavedMapWithMapName(const FString& InMapName, FSavedMap& OutSavedMap, int32& OutIndex)
 {
-	for (const FSavedMap& Map : SavedMaps)
+	for (int32 i = 0; i < SavedMaps.Num(); ++i)
 	{
+		const FSavedMap& Map = SavedMaps[i];
 		if (Map.MapAssetName == InMapName)
 		{
 			OutSavedMap = Map;
+			OutIndex = i;
 			return true;
 		}
 	}
