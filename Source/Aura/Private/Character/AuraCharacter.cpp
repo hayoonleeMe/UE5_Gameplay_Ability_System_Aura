@@ -64,9 +64,9 @@ void AAuraCharacter::LoadProgress()
 {
 	if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
-		if (ULoadScreenSaveGame* SaveObject = AuraGameMode->RetrieveInGameSaveData())
+		if (ULoadScreenSaveGame* SaveData = AuraGameMode->RetrieveInGameSaveData())
 		{
-			if (SaveObject->bFirstTimeLoadIn)
+			if (SaveData->bFirstTimeLoadIn)
 			{
 				InitializeDefaultAttributes();
 				AddCharacterAbilities();
@@ -75,14 +75,18 @@ void AAuraCharacter::LoadProgress()
 			{
 				if (AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>())
 				{
-					AuraPlayerState->SetLevel(SaveObject->PlayerLevel);
-					AuraPlayerState->SetXP(SaveObject->XP);
-					AuraPlayerState->SetSpellPoints(SaveObject->SpellPoints);
-					AuraPlayerState->SetAttributePoints(SaveObject->AttributePoints);
+					AuraPlayerState->SetLevel(SaveData->PlayerLevel);
+					AuraPlayerState->SetXP(SaveData->XP);
+					AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
+					AuraPlayerState->SetAttributePoints(SaveData->AttributePoints);
 				}
-				
-				UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveObject);
-				// TODO: Load in abilities from disk.
+				UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
+
+				// Add Saved Abilities
+				if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+				{
+					AuraASC->AddCharacterAbilitiesFromSaveData(SaveData);
+				}				
 			}
 		}
 	}
