@@ -45,6 +45,33 @@ struct FSavedAbility
 	int32 AbilityLevel;
 };
 
+USTRUCT()
+struct FSavedActor
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName;
+
+	UPROPERTY()
+	FTransform Transform;
+
+	// Serialized variables from the Actor - only those marked with SaveGame specifier
+	UPROPERTY()
+	TArray<uint8> Bytes;
+};
+
+USTRUCT()
+struct FSavedMap
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName;
+
+	UPROPERTY()
+	TArray<FSavedActor> SavedActors;
+};
 
 /**
  * 
@@ -113,4 +140,12 @@ public:
 	 */
 	UPROPERTY()
 	TArray<FSavedAbility> SavedAbilities;
+
+	/*
+	 *	World State
+	 */
+	UPROPERTY()
+	TArray<FSavedMap> SavedMaps;
+
+	bool GetSavedMapWithMapName(const FString& InMapName, FSavedMap& OutSavedMap);
 };
