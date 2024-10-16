@@ -148,4 +148,5 @@ public:
 	TArray<FSavedMap> SavedMaps;
 
 	bool GetSavedMapWithMapName(const FString& InMapName, FSavedMap& OutSavedMap, int32& OutIndex);
+	bool GetSavedMapWithMapName(const FString& InMapName, FSavedMap& OutSavedMap);
 };

@@ -22,6 +22,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool bReached;
 
+	/* Begin Save Interface */
+	virtual bool ShouldLoadTransform_Implementation() override { return false; }
+	virtual void LoadActor_Implementation() override;
+	/* End Save Interface */
+
 protected:
 	virtual void BeginPlay() override;
 	
