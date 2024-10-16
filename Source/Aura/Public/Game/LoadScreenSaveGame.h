@@ -44,6 +44,9 @@ public:
 	UPROPERTY()
 	ESaveSlotStatus SaveSlotStatus;
 
+	UPROPERTY()
+	bool bFirstTimeLoadIn;
+
 	/*
 	 *	Player
 	 */

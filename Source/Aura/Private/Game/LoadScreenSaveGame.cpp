@@ -6,4 +6,5 @@
 ULoadScreenSaveGame::ULoadScreenSaveGame()
 {
 	PlayerName = FString(TEXT("Default Name"));
+	bFirstTimeLoadIn = true;
 }

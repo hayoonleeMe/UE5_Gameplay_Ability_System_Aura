@@ -50,6 +50,8 @@ public:
 	virtual void OnRep_IsStunned() override;
 	virtual void OnRep_IsBurned() override;
 
+	void LoadProgress();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;

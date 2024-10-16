@@ -55,9 +55,34 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
+	LoadProgress();
+}
 
-	// Grant Ability
-	AddCharacterAbilities();
+void AAuraCharacter::LoadProgress()
+{
+	if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		if (ULoadScreenSaveGame* SaveObject = AuraGameMode->RetrieveInGameSaveData())
+		{
+			if (SaveObject->bFirstTimeLoadIn)
+			{
+				InitializeDefaultAttributes();
+				AddCharacterAbilities();
+			}
+			else
+			{
+				if (AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>())
+				{
+					AuraPlayerState->SetLevel(SaveObject->PlayerLevel);
+					AuraPlayerState->SetXP(SaveObject->XP);
+					AuraPlayerState->SetSpellPoints(SaveObject->SpellPoints);
+					AuraPlayerState->SetAttributePoints(SaveObject->AttributePoints);
+				}
+				
+				// TODO: Load in abilities from disk.
+			}
+		}
+	}
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -179,6 +204,7 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	{
 		if (ULoadScreenSaveGame* SaveObject = AuraGameMode->RetrieveInGameSaveData())
 		{
+			SaveObject->bFirstTimeLoadIn = false;
 			SaveObject->PlayerStartTag = CheckpointTag;
 
 			if (AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>())
@@ -258,9 +284,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-
-	// AbilitySystemComponent가 유효하게 설정된 뒤에, Attribute 초기화
-	InitializeDefaultAttributes();
 }
 
 void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
