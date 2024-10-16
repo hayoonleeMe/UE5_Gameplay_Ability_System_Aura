@@ -34,6 +34,9 @@ public:
 	int32 SlotIndex;
 
 	UPROPERTY()
+	FName PlayerStartTag;
+	
+	UPROPERTY()
 	ESaveSlotStatus SlotStatus;
 
 	void SetPlayerName(const FString& InPlayerName);
