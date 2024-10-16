@@ -9,6 +9,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
@@ -202,6 +203,10 @@ void AAuraCharacter::HideMagicCircle_Implementation()
 
 void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 {
+	if (!HasAuthority())
+	{
+		return;
+	}
 	if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
 		if (ULoadScreenSaveGame* SaveObject = AuraGameMode->RetrieveInGameSaveData())
@@ -220,7 +225,28 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 			SaveObject->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
 			SaveObject->Resilience = UAuraAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
 			SaveObject->Vigor = UAuraAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
-			
+
+			if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+			{
+				SaveObject->SavedAbilities.Empty();
+				FForEachAbility SaveAbilityDelegate;
+				SaveAbilityDelegate.BindLambda([this, &AuraASC, &SaveObject](const FGameplayAbilitySpec& AbilitySpec)
+				{
+					FSavedAbility SavedAbility;
+					SavedAbility.AbilityLevel = AbilitySpec.Level;
+					SavedAbility.AbilityTag = AuraASC->GetAbilityTagFromSpec(AbilitySpec);
+					SavedAbility.AbilitySlot = AuraASC->GetSlotFromAbilityTag(SavedAbility.AbilityTag);
+					SavedAbility.AbilityStatus = AuraASC->GetStatusFromAbilityTag(SavedAbility.AbilityTag);
+					if (const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(this))
+					{
+						const FAuraAbilityInfo& AuraAbilityInfo = AbilityInfo->FindAbilityInfoForTag(SavedAbility.AbilityTag);
+						SavedAbility.GameplayAbility = AuraAbilityInfo.Ability;
+						SavedAbility.AbilityType = AuraAbilityInfo.TypeTag;
+					}
+					SaveObject->SavedAbilities.Emplace(SavedAbility);
+				});
+				AuraASC->ForEachAbility(SaveAbilityDelegate);	// ASC의 모든 어빌리티에 대해 SaveAbilityDelegate의 람다 함수 적용
+			}
 			AuraGameMode->SaveInGameProgressData(SaveObject);
 		}		
 	}
