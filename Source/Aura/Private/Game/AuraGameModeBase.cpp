@@ -3,6 +3,7 @@
 
 #include "Game/AuraGameModeBase.h"
 
+#include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/SaveGame.h"
@@ -58,23 +59,26 @@ void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 
 AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 {
-	TArray<AActor*> Actors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
-	if (Actors.Num() > 0)
+	if (UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance()))
 	{
-		AActor* SelectedActor = Actors[0];	// 태그가 없으면 첫 PlayerStart 선택
-		for (AActor* Actor : Actors)
+		TArray<AActor*> Actors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
+		if (Actors.Num() > 0)
 		{
-			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			AActor* SelectedActor = Actors[0];	// 태그가 없으면 첫 PlayerStart 선택
+			for (AActor* Actor : Actors)
 			{
-				if (PlayerStart->PlayerStartTag == FName(TEXT("TheTag")))
+				if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
 				{
-					SelectedActor = PlayerStart;
-					break;
+					if (PlayerStart->PlayerStartTag == AuraGameInstance->PlayerStartTag)
+					{
+						SelectedActor = PlayerStart;
+						break;
+					}
 				}
 			}
-		}
-		return SelectedActor;
+			return SelectedActor;
+		}	
 	}
 	return nullptr;
 }
