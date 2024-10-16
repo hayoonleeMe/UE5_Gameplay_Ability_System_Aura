@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
@@ -79,6 +80,7 @@ void AAuraCharacter::LoadProgress()
 					AuraPlayerState->SetAttributePoints(SaveObject->AttributePoints);
 				}
 				
+				UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveObject);
 				// TODO: Load in abilities from disk.
 			}
 		}

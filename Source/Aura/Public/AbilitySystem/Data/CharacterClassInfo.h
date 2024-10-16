@@ -52,6 +52,9 @@ public:
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;
 
 	UPROPERTY(EditDefaultsOnly, Category="Aura|Common Class Defaults")
+	TSubclassOf<UGameplayEffect> SecondaryAttributes_Infinite;
+
+	UPROPERTY(EditDefaultsOnly, Category="Aura|Common Class Defaults")
 	TSubclassOf<UGameplayEffect> VitalAttributes;
 
 	UPROPERTY(EditDefaultsOnly, Category="Aura|Common Class Defaults")

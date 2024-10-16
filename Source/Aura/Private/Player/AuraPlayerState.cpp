@@ -20,7 +20,7 @@ AAuraPlayerState::AAuraPlayerState()
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>(TEXT("Attribute Set"));
 
 	Level = 1;
-	XP = 1;
+	XP = 0;
 	AttributePoints = 0;
 	SpellPoints = 0;
 }
@@ -42,7 +42,7 @@ UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const
 
 void AAuraPlayerState::AddToLevel(int32 InLevel)
 {
-	SetLevel(Level + InLevel);
+	SetLevel(Level + InLevel, true);
 }
 
 void AAuraPlayerState::AddToXP(int32 InXP)
@@ -62,10 +62,10 @@ void AAuraPlayerState::AddToSpellPoints(int32 InSpellPoints)
 	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
 }
 
-void AAuraPlayerState::SetLevel(int32 InLevel)
+void AAuraPlayerState::SetLevel(int32 InLevel, bool bLevelUp)
 {
 	Level = InLevel;
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, bLevelUp);
 }
 
 void AAuraPlayerState::SetXP(int32 InXP)
@@ -88,7 +88,7 @@ void AAuraPlayerState::SetSpellPoints(int32 InPoints)
 
 void AAuraPlayerState::OnRep_Level(int32 OldLevel)
 {
-	OnLevelChangedDelegate.Broadcast(Level);	
+	OnLevelChangedDelegate.Broadcast(Level, true);	
 }
 
 void AAuraPlayerState::OnRep_XP(int32 OldXP)
