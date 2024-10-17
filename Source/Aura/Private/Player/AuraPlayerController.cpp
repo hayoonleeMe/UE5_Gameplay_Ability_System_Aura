@@ -11,13 +11,13 @@
 #include "NavigationSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Input/AuraInputComponent.h"
-#include "Interaction/EnemyInterface.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Actor/MagicCircle.h"
 #include "Aura/Aura.h"
 #include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
+#include "Interaction/HighlightInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -154,7 +154,7 @@ void AAuraPlayerController::CursorTrace()
 	}
 
 	LastActor = CurrentActor;
-	CurrentActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+	CurrentActor = Cast<IHighlightInterface>(CursorHit.GetActor());
 
 	if (LastActor != CurrentActor)
 	{
