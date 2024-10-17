@@ -74,6 +74,6 @@ protected:
 
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Aura|Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aura|Applied Effects")
 	float ActorLevel;
 };

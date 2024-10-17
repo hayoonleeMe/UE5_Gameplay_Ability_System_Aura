@@ -8,6 +8,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULootTiers;
 class ULoadScreenSaveGame;
 struct FDamageEffectParams;
 class UAbilityInfo;
@@ -62,6 +63,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Aura|Character Class Defaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+
+	/*
+	 *	Loot
+	 */
+	UFUNCTION(BlueprintCallable, Category="Aura|Loot Tiers", meta=(DefaultToSelf="WorldContextObject"))
+	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 
 	/*
 	 *	Effect Context Getters
