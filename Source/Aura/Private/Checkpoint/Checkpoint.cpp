@@ -31,6 +31,8 @@ ACheckpoint::ACheckpoint(const FObjectInitializer& ObjectInitializer)
 	MoveToComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Move To Component"));
 	MoveToComponent->SetupAttachment(GetRootComponent());
 	MoveToComponent->SetRelativeLocation(FVector(0.f, 0.f, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+
+	bBindOverlapCallback = true;
 }
 
 void ACheckpoint::LoadActor_Implementation()
@@ -43,7 +45,10 @@ void ACheckpoint::LoadActor_Implementation()
 
 void ACheckpoint::HighlightActor_Implementation()
 {
-	CheckpointMeshComponent->SetRenderCustomDepth(true);
+	if (!bReached)
+	{
+		CheckpointMeshComponent->SetRenderCustomDepth(true);
+	}
 }
 
 void ACheckpoint::UnHighlightActor_Implementation()
@@ -60,7 +65,10 @@ void ACheckpoint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSphereOverlap);
+	if (bBindOverlapCallback)
+	{
+		SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSphereOverlap);
+	}
 }
 
 void ACheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
