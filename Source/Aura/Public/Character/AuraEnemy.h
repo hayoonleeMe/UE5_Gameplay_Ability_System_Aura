@@ -58,6 +58,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category="Aura|Combat")
 	TObjectPtr<AActor> CombatTarget;
 
+	FORCEINLINE void SetLevel(int32 InLevel) { Level = InLevel; }
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
