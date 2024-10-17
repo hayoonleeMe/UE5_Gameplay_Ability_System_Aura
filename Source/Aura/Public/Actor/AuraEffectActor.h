@@ -11,7 +11,7 @@ class UGameplayEffect;
 class USphereComponent;
 
 UENUM(BlueprintType)
-enum class EEffectApplicationPolicy
+enum class EEffectApplicationPolicy : uint8
 {
 	DoNotApply,
 	ApplyOnOverlap,
@@ -19,7 +19,7 @@ enum class EEffectApplicationPolicy
 };
 
 UENUM(BlueprintType)
-enum class EEffectRemovalPolicy
+enum class EEffectRemovalPolicy : uint8
 {
 	DoNotRemove,
 	RemoveOnEndOverlap

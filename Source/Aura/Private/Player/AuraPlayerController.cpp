@@ -17,6 +17,7 @@
 #include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
+#include "Interaction/EnemyInterface.h"
 #include "Interaction/HighlightInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
 
@@ -133,14 +134,8 @@ void AAuraPlayerController::CursorTrace()
 	// Block Cursor Trace
 	if (GetAuraASC() && GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_CursorTrace))
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighlightActor();
-		}
-		if (CurrentActor)
-		{
-			CurrentActor->UnHighlightActor();
-		}
+		UnHighlightActor(LastActor);
+		UnHighlightActor(CurrentActor);
 		LastActor = nullptr;
 		CurrentActor = nullptr;
 		return;
@@ -154,18 +149,28 @@ void AAuraPlayerController::CursorTrace()
 	}
 
 	LastActor = CurrentActor;
-	CurrentActor = Cast<IHighlightInterface>(CursorHit.GetActor());
+	CurrentActor = IsValid(CursorHit.GetActor()) && CursorHit.GetActor()->Implements<UHighlightInterface>() ? CursorHit.GetActor() : nullptr;
 
 	if (LastActor != CurrentActor)
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighlightActor();
-		}
-		if (CurrentActor)
-		{
-			CurrentActor->HighlightActor();
-		}
+		UnHighlightActor(LastActor);
+		HighlightActor(CurrentActor);
+	}
+}
+
+void AAuraPlayerController::HighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_HighlightActor(InActor);
+	}
+}
+
+void AAuraPlayerController::UnHighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_UnHighlightActor(InActor);
 	}
 }
 
@@ -179,7 +184,14 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		bTargeting = CurrentActor != nullptr;
+		if (IsValid(CurrentActor))
+		{
+			TargetingStatus = CurrentActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
 		bAutoRunning = false;
 	}
 	if (GetAuraASC())
@@ -197,7 +209,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 	
 	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Released (마우스 커서가 특정 오브젝트 위에서 Pressed하고 이후에 Released한다면 특정 어빌리티 활성화)
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting || bShiftKeyDown)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (IsValid(GetAuraASC()))
 		{
@@ -233,7 +245,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 
 	FollowTime = 0.f;
-	bTargeting = false;
+	TargetingStatus = ETargetingStatus::NotTargeting;
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
@@ -245,7 +257,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	}
 	
 	// LMB가 아닌 입력 or LMB on Highlightable Object Pressed -> Held (마우스 커서가 특정 오브젝트 위에 있고 Input Held 중이면 특정 어빌리티 활성화)
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting || bShiftKeyDown)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (IsValid(GetAuraASC()))
 	    {

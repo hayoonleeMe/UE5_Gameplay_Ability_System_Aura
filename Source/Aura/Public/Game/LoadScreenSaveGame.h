@@ -10,7 +10,7 @@
 class UGameplayAbility;
 
 UENUM(BlueprintType)
-enum class ESaveSlotStatus
+enum class ESaveSlotStatus : uint8
 {
 	Vacant,
 	EnterName,

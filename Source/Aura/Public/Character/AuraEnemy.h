@@ -35,8 +35,8 @@ public:
 	/* End Combat Interface */
 
 	/* Begin Highlight Interface */
-	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
 	/* End Highlight Interface */
 
 	/* Begin Overlay Widget Controller */
