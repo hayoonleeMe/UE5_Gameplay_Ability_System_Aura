@@ -224,6 +224,15 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	// Non Highlightable Object 위로 짧게 Press하면 Auto Running
 	if (ControlledPawn && FollowTime <= ShortPressThreshold)
 	{
+		// Auto run to highlighted actor, no click niagara system
+		if (IsValid(CurrentActor) && CurrentActor->Implements<UHighlightInterface>())
+		{
+			IHighlightInterface::Execute_SetMoveToLocation(CurrentActor, CachedDestination);
+		}
+		else if (ClickNiagaraSystem && GetAuraASC() && !GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		}
 		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 		{
 			SplineComponent->ClearSplinePoints();
@@ -237,10 +246,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 			}
 			bAutoRunning = true;
-		}
-		if (ClickNiagaraSystem && GetAuraASC() && !GetAuraASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
 	}
 

@@ -24,6 +24,8 @@ AAuraEnemy::AAuraEnemy()
 	GetCharacterMovement()->RotationRate.Yaw = 360.f;
 	
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	WeaponMeshComponent->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>(TEXT("Ability System Component"));
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -61,9 +63,7 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 void AAuraEnemy::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	WeaponMeshComponent->SetRenderCustomDepth(true);
-	WeaponMeshComponent->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AAuraEnemy::UnHighlightActor_Implementation()

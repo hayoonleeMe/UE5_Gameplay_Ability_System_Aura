@@ -3,6 +3,7 @@
 
 #include "Checkpoint/Checkpoint.h"
 
+#include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Game/AuraGameModeBase.h"
@@ -19,12 +20,17 @@ ACheckpoint::ACheckpoint(const FObjectInitializer& ObjectInitializer)
 	CheckpointMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CheckpointMeshComponent->SetCollisionResponseToAllChannels(ECR_Block);
 	CheckpointMeshComponent->SetRelativeLocation(FVector(0.f, 0.f, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+	CheckpointMeshComponent->SetCustomDepthStencilValue(CUSTOM_DEPTH_TAN);
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SphereComponent->SetupAttachment(CheckpointMeshComponent);
 	SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	SphereComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+	MoveToComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Move To Component"));
+	MoveToComponent->SetupAttachment(GetRootComponent());
+	MoveToComponent->SetRelativeLocation(FVector(0.f, 0.f, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
 }
 
 void ACheckpoint::LoadActor_Implementation()
@@ -33,6 +39,21 @@ void ACheckpoint::LoadActor_Implementation()
 	{
 		HandleGlowEffects();
 	}
+}
+
+void ACheckpoint::HighlightActor_Implementation()
+{
+	CheckpointMeshComponent->SetRenderCustomDepth(true);
+}
+
+void ACheckpoint::UnHighlightActor_Implementation()
+{
+	CheckpointMeshComponent->SetRenderCustomDepth(false);
+}
+
+void ACheckpoint::SetMoveToLocation_Implementation(FVector& OutDestination)
+{
+	OutDestination = MoveToComponent->GetComponentLocation();
 }
 
 void ACheckpoint::BeginPlay()
