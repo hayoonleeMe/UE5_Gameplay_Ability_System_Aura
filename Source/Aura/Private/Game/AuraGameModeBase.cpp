@@ -40,8 +40,10 @@ ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData(const FString& SlotName,
 	}
 	else
 	{
-		check(LoadScreenSaveGameClass);
-		SaveGameObject = UGameplayStatics::CreateSaveGameObject(LoadScreenSaveGameClass);
+		if (LoadScreenSaveGameClass)
+		{
+			SaveGameObject = UGameplayStatics::CreateSaveGameObject(LoadScreenSaveGameClass);
+		}
 	}
 	return Cast<ULoadScreenSaveGame>(SaveGameObject);
 }
