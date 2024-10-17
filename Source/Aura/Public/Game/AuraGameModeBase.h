@@ -32,7 +32,7 @@ public:
 	ULoadScreenSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 	
-	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName = FString()) const;
+	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName) const;
 	void LoadWorldState(UWorld* World) const;
 
 	void TravelToMap(UMVVM_LoadSlot* Slot);
@@ -56,6 +56,8 @@ public:
 
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
+	void PlayerDied(ACharacter* DeadCharacter);
+	
 protected:
 	virtual void BeginPlay() override;
 };

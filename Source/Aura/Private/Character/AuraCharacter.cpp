@@ -48,6 +48,7 @@ AAuraCharacter::AAuraCharacter()
 	LevelUpNiagaraComponent->bAutoActivate = false;
 
 	CharacterClass = ECharacterClass::Elementalist;
+	DeathTime = 5.f;
 }
 
 // 서버에서 호출됨 
@@ -110,6 +111,20 @@ int32 AAuraCharacter::GetPlayerLevel_Implementation()
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->GetPlayerLevel();
+}
+
+void AAuraCharacter::Die(const FVector& DeathImpulse)
+{
+	Super::Die(DeathImpulse);
+
+	GetWorldTimerManager().SetTimer(DeathTimer, FTimerDelegate::CreateLambda([this]()
+	{
+		if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
+		{
+			AuraGameMode->PlayerDied(this);
+		}			
+	}), DeathTime, false);
+	TopDownCameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 }
 
 int32 AAuraCharacter::FindLevelForXP_Implementation(const int32 InXP) const

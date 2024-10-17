@@ -25,6 +25,7 @@ public:
 
 	/* Begin Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	/* End Combat Interface */
 
 	/* Begin Player Interface */
@@ -52,6 +53,14 @@ public:
 
 	void LoadProgress();
 
+	/*
+	 *	Death
+	 */
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime;
+
+	FTimerHandle DeathTimer;
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;

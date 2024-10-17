@@ -39,6 +39,9 @@ public:
 	UPROPERTY()
 	ESaveSlotStatus SlotStatus;
 
+	UPROPERTY()
+	FString MapAssetName;
+
 	void SetPlayerName(const FString& InPlayerName);
 	void SetMapName(const FString& InMapName);
 	void SetPlayerLevel(int32 InLevel);
