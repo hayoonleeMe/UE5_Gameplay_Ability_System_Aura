@@ -78,7 +78,7 @@ void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	}
 }
 
-void AAuraGameModeBase::SaveWorldState(UWorld* World) const
+void AAuraGameModeBase::SaveWorldState(UWorld* World, const FString& DestinationMapAssetName) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -88,6 +88,13 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World) const
 
 	if (ULoadScreenSaveGame* SaveGame = GetSaveSlotData(AuraGameInstance->LoadSlotName, AuraGameInstance->LoadSlotIndex))
 	{
+		// 다른 맵으로 이동하는 경우 이동하고자 하는 맵의 MapAssetName, MapName을 함께 저장한다.
+		if (DestinationMapAssetName != FString())
+		{
+			SaveGame->MapAssetName = DestinationMapAssetName;
+			SaveGame->MapName = GetMapNameFromMapAssetName(DestinationMapAssetName);
+		}
+		
 		FSavedMap SavedMap;
 		int32 SavedMapIndex;
 		// 해당 월드 정보가 없으면 새로 추가
@@ -179,6 +186,18 @@ void AAuraGameModeBase::LoadWorldState(UWorld* World) const
 void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 {
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
+}
+
+FString AAuraGameModeBase::GetMapNameFromMapAssetName(const FString& InMapAssetName) const
+{
+	for (auto Map : Maps)
+	{
+		if (Map.Value.ToSoftObjectPath().GetAssetName() == InMapAssetName)
+		{
+			return Map.Key;
+		}
+	}
+	return FString();
 }
 
 AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
